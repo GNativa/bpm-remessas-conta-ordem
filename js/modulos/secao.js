@@ -65,9 +65,6 @@ class Secao {
             this.configurarTitulo(secao);
         }
 
-        const linhaCampos = $("<div></div>");
-        linhaCampos.addClass("row g-3");
-
         this.adicionarLinha();
         const elemento = $(secao);
         $("#containerFormulario").append(elemento);

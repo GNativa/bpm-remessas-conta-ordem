@@ -84,7 +84,9 @@ const Formulario = (() => {
         ];
 
         // salvarCampos(camposRemessa);
-        secaoRemessa = new ListaObjetos("remessa", "Remessas de venda por conta e ordem", null, camposRemessa, false);
+        secaoRemessa = new ListaObjetos(
+            "remessa", "Remessas", null,
+            camposRemessa,);
         secaoRemessa.gerar();
     }
 

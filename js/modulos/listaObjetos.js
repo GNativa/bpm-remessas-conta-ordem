@@ -1,9 +1,10 @@
 class ListaObjetos extends Secao {
-    constructor(id, titulo, campos, factories = [], permiteCriarLinhas = true) {
+    constructor(id, titulo, campos, factories = [], permiteAdicionarLinhas = true, permiteRemoverLinhas = true) {
         super(id, titulo, campos);
         this.factories = factories;
         this.camposLista = [];
-        this.permiteCriarLinhas = permiteCriarLinhas;
+        this.permiteAdicionarLinhas = permiteAdicionarLinhas;
+        this.permiteRemoverLinhas = permiteRemoverLinhas;
     }
 
     adicionarLinha() {
@@ -19,6 +20,10 @@ class ListaObjetos extends Secao {
         botaoRemover.on("click", () => {
             this.removerLinha(indiceUltimaLinha);
         });
+
+        if (!this.permiteRemoverLinhas) {
+            botaoRemover.prop("disabled", true);
+        }
 
         if (indiceUltimaLinha === 0) {
             botaoRemover.prop("disabled", true);
@@ -41,14 +46,19 @@ class ListaObjetos extends Secao {
             }
 
             const campo = factory.construir(novoId);
-            campo.campo.attr("id", novoId);
+            campo.definirListaDeObjetos(this);
 
             linhaItem.append(campo.coluna);
-            this.divSecao.append(linhaItem);
             camposDaLinha.push(campo);
         }
 
+        this.divSecao.append(linhaItem);
         this.camposLista.push(camposDaLinha);
+    }
+
+    gerar() {
+        super.gerar();
+        // this.divSecao.addClass("row");
     }
 
     removerLinha(indice) {
@@ -61,6 +71,8 @@ class ListaObjetos extends Secao {
     }
 
     configurarTitulo(elementoSecao) {
+        // const colunaSuperior = $(`<div class="col-12"></div>`);
+
         const linhaTitulo = $(`<div class="row mt-3"></div>`);
 
         const colunaTitulo = $(`<div class="col"></div>`);
@@ -70,16 +82,17 @@ class ListaObjetos extends Secao {
 
         const hr = $("<hr>");
 
+        // colunaSuperior.append(linhaTitulo);
         linhaTitulo.append(colunaTitulo);
 
-        if (this.permiteCriarLinhas) {
-            const colunaBotao = $(`<div class="col-1 d-flex justify-content-end"></div>`);
+        if (this.permiteAdicionarLinhas) {
+            const colunaBotao = $(`<div class="col-2 d-flex justify-content-end"></div>`);
 
             const botaoNovaLinha = $(`
-            <button type="button" id="novaLinha${this.id}" class="btn botao ms-3">
-                <i class="bi bi-plus"></i>
-            </button>
-        `);
+                <button type="button" title="Nova linha" id="novaLinha${this.id}" class="btn botao ms-3">
+                    <i class="bi bi-plus fs-5 me-2"></i>Nova linha
+                </button>
+            `);
 
             botaoNovaLinha.on("click", () => {
                 this.adicionarLinha();
@@ -90,6 +103,7 @@ class ListaObjetos extends Secao {
         }
 
         colunaTitulo.append(tituloSecao);
+        // elementoSecao.append(colunaSuperior);
         elementoSecao.append(linhaTitulo);
         elementoSecao.append(hr);
     }

@@ -1,11 +1,15 @@
 class CampoFactory {
     constructor(
         idCampo = "",
-        construir = function(idCompleto = "") {
+        funcaoConstrutora = function(idCompleto = "") {
             return new Campo(idCompleto);
         }
     ) {
         this.idCampo = idCampo;
-        this.construir = construir;
+        this.funcaoConstrutora = funcaoConstrutora;
+    }
+
+    construir(id) {
+        return this.funcaoConstrutora(id);
     }
 }
