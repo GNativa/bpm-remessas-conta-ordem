@@ -10,12 +10,13 @@ class ListaObjetos extends Secao {
     adicionarLinha() {
         const indiceUltimaLinha = this.obterIndiceUltimaLinha();
 
-        const linhaItem = $(`<div data-linha-lista='${indiceUltimaLinha}' class="row g-3"></div>`);
+        const linhaItem = $(`<div ${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indiceUltimaLinha}" class="row g-3"></div>`);
         const colunaBotaoRemover = $(`<div class="col-12 d-flex justify-content-end"></div>`);
         const botaoRemover = $(`
             <button type="button" title="Remover linha" id="removerLinhaSecao${this.id}${indiceUltimaLinha}" class="btn botao ms-3">
                 <i class="bi bi-x fs-5"></i>
-            </button>`);
+            </button>
+        `);
 
         botaoRemover.on("click", () => {
             this.removerLinha(indiceUltimaLinha);
@@ -25,11 +26,15 @@ class ListaObjetos extends Secao {
             botaoRemover.prop("disabled", true);
         }
 
+        const hr = $("<hr>");
+
         if (indiceUltimaLinha === 0) {
             botaoRemover.prop("disabled", true);
+            hr.addClass("border-2");
         }
-        else if (indiceUltimaLinha > 0) {
-            linhaItem.addClass("mt-1");
+        else {
+            hr.addClass("border-1");
+            //linhaItem.addClass("mt-1");
         }
 
         colunaBotaoRemover.append(botaoRemover);
@@ -46,13 +51,16 @@ class ListaObjetos extends Secao {
             }
 
             const campo = factory.construir(novoId);
-            campo.definirListaDeObjetos(this);
+            campo.atribuirListaObjetos(this);
+            campo.atribuirIdSingular(factory.idCampo);
+            campo.atribuirLinhaLista(indiceUltimaLinha);
 
             linhaItem.append(campo.coluna);
             camposDaLinha.push(campo);
         }
 
         this.divSecao.append(linhaItem);
+        linhaItem.before(hr);
         this.camposLista.push(camposDaLinha);
     }
 
@@ -61,8 +69,11 @@ class ListaObjetos extends Secao {
         // this.divSecao.addClass("row");
     }
 
-    removerLinha(indice) {
-        $(`[data-linha-lista=${indice}]`).remove();
+    removerLinha(indice = 1) {
+        $(`
+            [${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indice}"],
+            hr:has(+ [${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indice}"])
+        `).remove();
         this.camposLista.splice(indice, 1);
     }
 
@@ -79,8 +90,6 @@ class ListaObjetos extends Secao {
 
         const tituloSecao = $(`<div class="titulo-m"></div>`);
         tituloSecao.text(this.titulo);
-
-        const hr = $("<hr>");
 
         // colunaSuperior.append(linhaTitulo);
         linhaTitulo.append(colunaTitulo);
@@ -105,6 +114,6 @@ class ListaObjetos extends Secao {
         colunaTitulo.append(tituloSecao);
         // elementoSecao.append(colunaSuperior);
         elementoSecao.append(linhaTitulo);
-        elementoSecao.append(hr);
+        // elementoSecao.append(hr);
     }
 }
