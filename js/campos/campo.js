@@ -5,6 +5,7 @@
 class Campo {
     constructor(id, rotulo, largura, dica, tag, tipo, fonte, campoFonte) {
         this.id = id;                            // Atributo "id" do elemento HTML
+        this.idSingular = null;                  // ID original do campo de uma lista de objetos
         this.rotulo = rotulo;                    // Atributo "title" do elemento HTML
         this.largura = largura;                  // Largura do campo (respeitando classes .col-*)
         this.dica = dica ?? null;                // Dica para explicação do campo
@@ -17,6 +18,7 @@ class Campo {
         this.classes = ["campo"];                // Classes CSS do campo
 
         this.listaDeObjetos = null;
+        this.linhaLista = null;
 
         this.obrigatorio = false;                // Indica se o campo é obrigatório
         this.visivel = true;                     // Indica se o campo está visível
@@ -47,7 +49,6 @@ class Campo {
      */
     configurarElementos() {
         const id = this.id;
-
         const rotulo = this.rotulo;
         const largura = this.largura;
         const dica = this.dica;
@@ -118,25 +119,25 @@ class Campo {
     /*
         Configura a máscara e opções de máscara do campo.
      */
-    adicionarEvento(evento, funcao) {
+    adicionarEvento(evento = "", funcao = (e) => {}) {
         this.campo.on(evento, funcao);
         return this;
     }
 
-    removerEvento(evento) {
+    removerEvento(evento = "") {
         this.campo.off(evento);
         return this;
     }
 
-    definirCampoMestre(campo) {
+    definirCampoMestre(campo = new Campo()) {
         this.campoMestre = campo;
     }
 
-    definirConsistenciaAtiva(validacao) {
+    definirConsistenciaAtiva(validacao = new Validacao()) {
         this.consistenciaAtiva = validacao;
     }
 
-    definirFeedback(mensagem) {
+    definirFeedback(mensagem = "") {
         this.feedback.text(mensagem);
         return this;
     }
@@ -154,23 +155,44 @@ class Campo {
         return this;
     }
 
-    definirListaDeObjetos(listaDeObjetos) {
+    atribuirListaObjetos(listaDeObjetos = new ListaObjetos()) {
         this.listaDeObjetos = listaDeObjetos;
     }
 
-    sobrescreverObrigatoriedade(sobrescrever) {
+    atribuirLinhaLista(linha = 0) {
+        this.linhaLista = linha;
+    }
+
+    atribuirIdSingular(idSingular = "") {
+        this.idSingular = idSingular;
+    }
+
+    /*
+    definirLinha(linha) {
+        this.linha = linha;
+        const lista = this.listaDeObjetos;
+
+        if (lista != null) {
+            this.campo.attr(`${Constantes.campos.atributos.sequenciaCampoLista}`, linha);
+            this.campo.attr(`${Constantes.campos.atributos.campoListaObjetos}`, lista.id);
+        }
+    }
+
+     */
+
+    sobrescreverObrigatoriedade(sobrescrever = false) {
         this.obrigatoriedadeSobrescrita = sobrescrever;
     }
 
-    sobrescreverEditabilidade(sobrescrever) {
+    sobrescreverEditabilidade(sobrescrever = false) {
         this.editabilidadeSobrescrita = sobrescrever;
     }
 
-    sobrescreverVisibilidade(sobrescrever) {
+    sobrescreverVisibilidade(sobrescrever = false) {
         this.visibilidadeSobrescrita = sobrescrever;
     }
 
-    definirObrigatoriedade(obrigatorio) {
+    definirObrigatoriedade(obrigatorio = false) {
         if (this.obrigatoriedadeSobrescrita) {
             return this;
         }
@@ -200,7 +222,7 @@ class Campo {
         return this;
     }
 
-    definirVisibilidade(visivel) {
+    definirVisibilidade(visivel = true) {
         if (this.visibilidadeSobrescrita) {
             return this;
         }
@@ -217,7 +239,7 @@ class Campo {
         return this;
     }
 
-    definirEdicao(editavel) {
+    definirEdicao(editavel = true) {
         if (this.editabilidadeSobrescrita) {
             return this;
         }
@@ -232,7 +254,7 @@ class Campo {
         return this;
     }
 
-    definirValidez(valido) {
+    definirValidez(valido = true) {
         this.valido = valido;
         const campo = this.campo;
 
@@ -254,7 +276,7 @@ class Campo {
         this.campo.addClass("carregando");
     }
 
-    finalizarCarregamento(interromperAnimacao) {
+    finalizarCarregamento(interromperAnimacao = false) {
         const camposFonte = $(`[${Constantes.campos.atributos.fonte}=${this.fonte.id}]`);
         const camposFonteVisiveis = camposFonte.filter(function () {
             return this.style.display !== "none"
@@ -310,8 +332,12 @@ class Campo {
         return valorLimpo;
     }
 
-    on(evento, funcao) {
+    on(evento = "", funcao = (e) => {}) {
         this.campo.on(evento, funcao);
         return this;
+    }
+
+    notificarMudanca() {
+        this.campo.trigger("change");
     }
 }
