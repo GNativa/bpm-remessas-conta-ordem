@@ -15,18 +15,12 @@ class Secao {
     }
 
     configurarTitulo(elementoSecao) {
-        const linhaTitulo = $("<div></div>");
-        linhaTitulo.addClass("row linha-titulo");
-
-        const colunaTitulo = $("<div></div>");
-        colunaTitulo.addClass("col coluna-titulo");
-
-        const tituloSecao = $("<div></div>");
-        tituloSecao.addClass("titulo-g");
+        const linhaTitulo = $(`<div class="row linha-titulo"></div>`);
+        const colunaTitulo = $(`<div class="col coluna-titulo"></div>`);
+        const tituloSecao = $(`<div class="titulo-g"></div>`);
         tituloSecao.text(this.titulo);
 
-        const hr = $("<hr>");
-        hr.addClass("hr-titulo");
+        const hr = $(`<hr class="hr-titulo border-3">`);
         linhaTitulo.append(colunaTitulo);
         colunaTitulo.append(tituloSecao);
         elementoSecao.append(linhaTitulo);
@@ -34,8 +28,7 @@ class Secao {
     }
 
     adicionarLinha() {
-        const linhaCampos = $("<div></div>");
-        linhaCampos.addClass("row g-3");
+        const linhaCampos = $(`<div class="row g-3"></div>`);
 
         for (const campo of this.campos) {
             if (document.getElementById(campo.id) !== null) {
