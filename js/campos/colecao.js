@@ -71,6 +71,16 @@ class ColecaoCampos {
         return campos.flat();
     }
 
+    obterLista(idAgrupado = "") {
+        const campos = ColecaoCampos.#campos;
+
+        if (!campos.hasOwnProperty(idAgrupado)) {
+            throw new Error(`Não há uma lista de campos com o ID agrupado "${idAgrupado}"`);
+        }
+
+        return campos[idAgrupado];
+    }
+
     /*
     estaVazia() {
         return Object.keys(ColecaoCampos.#campos).length === 0;
