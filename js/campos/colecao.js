@@ -55,11 +55,17 @@ class ColecaoCampos {
         });
     }
 
+    /*
+    #campos = {
+        "id": [campo, campo, campo],
+    }
+     */
+
     obterCampos() {
         const campos = [];
 
         for (const lista in ColecaoCampos.#campos) {
-            campos.push(lista);
+            campos.push(ColecaoCampos.#campos[lista]);
         }
 
         return campos.flat();
