@@ -5,7 +5,7 @@
 class Campo {
     constructor(id, rotulo, largura, dica, tag, tipo, fonte, campoFonte) {
         this.id = id;                            // Atributo "id" do elemento HTML
-        this.idSingular = null;                  // ID original do campo de uma lista de objetos
+        this.idAgrupado = id;                  // ID agrupado do campo para identificação em listas de objeto
         this.rotulo = rotulo;                    // Atributo "title" do elemento HTML
         this.largura = largura;                  // Largura do campo (respeitando classes .col-*)
         this.dica = dica ?? null;                // Dica para explicação do campo
@@ -129,11 +129,11 @@ class Campo {
         return this;
     }
 
-    definirCampoMestre(campo = new Campo()) {
+    definirCampoMestre(campo) {
         this.campoMestre = campo;
     }
 
-    definirConsistenciaAtiva(validacao = new Validacao()) {
+    definirConsistenciaAtiva(validacao) {
         this.consistenciaAtiva = validacao;
     }
 
@@ -142,7 +142,7 @@ class Campo {
         return this;
     }
 
-    mostrarFeedback(mostrar) {
+    mostrarFeedback(mostrar = false) {
         const feedback = this.feedback;
 
         if (mostrar) {
@@ -155,7 +155,7 @@ class Campo {
         return this;
     }
 
-    atribuirListaObjetos(listaDeObjetos = new ListaObjetos()) {
+    atribuirListaObjetos(listaDeObjetos) {
         this.listaDeObjetos = listaDeObjetos;
     }
 
@@ -163,8 +163,8 @@ class Campo {
         this.linhaLista = linha;
     }
 
-    atribuirIdSingular(idSingular = "") {
-        this.idSingular = idSingular;
+    atribuirIdAgrupado(idAgrupado = "") {
+        this.idAgrupado = idAgrupado;
     }
 
     /*
@@ -337,7 +337,7 @@ class Campo {
         return this;
     }
 
-    notificarMudanca() {
+    notificar() {
         this.campo.trigger("change");
     }
 }
