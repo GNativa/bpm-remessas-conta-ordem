@@ -55,6 +55,16 @@ class ColecaoCampos {
         });
     }
 
+    obterCampos() {
+        const campos = [];
+
+        for (const lista in ColecaoCampos.#campos) {
+            campos.push(lista);
+        }
+
+        return campos.flat();
+    }
+
     /*
     estaVazia() {
         return Object.keys(ColecaoCampos.#campos).length === 0;
