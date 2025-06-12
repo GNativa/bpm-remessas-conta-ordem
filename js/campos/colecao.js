@@ -55,6 +55,12 @@ class ColecaoCampos {
         });
     }
 
+    removerCampos(campos = [new Campo()]) {
+        for (const campo of campos) {
+            this.removerCampo(campo);
+        }
+    }
+
     /*
     #campos = {
         "id": [campo, campo, campo],

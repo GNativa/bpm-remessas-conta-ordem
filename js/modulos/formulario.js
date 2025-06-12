@@ -14,15 +14,15 @@ const Formulario = (() => {
         titulo: "Remessas de venda por conta e ordem",
     };
 
-    const camposObrigatorios = {                       // Listas dos IDs dos campos obrigatórios por etapa
+    const camposObrigatorios = {                       // Listas dos IDs agrupados dos campos obrigatórios por etapa
         "etapa1": [],
     };
 
-    const camposBloqueados = {                         // Listas dos IDs dos campos bloqueados por etapa
+    const camposBloqueados = {                         // Listas dos IDs agrupados dos campos bloqueados por etapa
         "etapa1": [],
     };
 
-    const camposOcultos = {                            // Listas dos IDs dos campos ocultos por etapa
+    const camposOcultos = {                            // Listas dos IDs agrupados dos campos ocultos por etapa
         "etapa1": [],
     };
 
@@ -84,20 +84,8 @@ const Formulario = (() => {
         ];
 
         // salvarCampos(camposRemessa);
-        secaoRemessa = new ListaObjetos(
-            "remessa", "Remessas", null,
-            camposRemessa,);
+        secaoRemessa = new ListaObjetos("remessa", "Remessas", null, new ColecaoCampos(), camposRemessa, );
         secaoRemessa.gerar();
-    }
-
-    // salvarDados(listaDeCampos: array<Campo>): void
-    /*
-        Salva os campos de uma lista no objeto de campos{} para acesso via ID.
-     */
-    function salvarCampos(campos) {
-        for (const campo of campos) {
-            campos[campo["id"]] = campo;
-        }
     }
 
     return {

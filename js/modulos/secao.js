@@ -4,7 +4,7 @@
  */
 
 class Secao {
-    constructor(id, titulo, campos) {
+    constructor(id = "", titulo, campos, colecao) {
         this.id = id;
         this.titulo = titulo;
         this.possuiTitulo = titulo !== undefined && titulo !== null;
@@ -12,9 +12,10 @@ class Secao {
         this.elemento = $();
         this.divSecao = $("<div></div>");
         this.campos = campos ?? [];
+        this.colecao = colecao;
     }
 
-    configurarTitulo(elementoSecao) {
+    configurarTitulo(elementoSecao = $(``)) {
         const linhaTitulo = $(`<div class="row linha-titulo"></div>`);
         const colunaTitulo = $(`<div class="col coluna-titulo"></div>`);
         const tituloSecao = $(`<div class="titulo-g"></div>`);
@@ -28,16 +29,25 @@ class Secao {
     }
 
     adicionarLinha() {
+        this.criarLinha();
+        this.salvarCampos();
+    }
+
+    criarLinha() {
         const linhaCampos = $(`<div class="row g-3"></div>`);
 
         for (const campo of this.campos) {
             if (document.getElementById(campo.id) !== null) {
-                throw Error(`Já existe um campo com o id "${id}".`);
+                throw Error(`Já existe um campo com o id "${campo.id}".`);
             }
 
             linhaCampos.append(campo.coluna);
             this.divSecao.append(linhaCampos);
         }
+    }
+
+    salvarCampos() {
+        this.colecao.salvarCampos(this.campos);
     }
 
     gerar() {
@@ -64,10 +74,11 @@ class Secao {
 
         this.elemento = elemento;
         this.gerada = true;
+
         return this;
     }
 
-    definirVisibilidade(visivel) {
+    definirVisibilidade(visivel = true) {
         this.visivel = visivel;
 
         if (this.visivel) {
