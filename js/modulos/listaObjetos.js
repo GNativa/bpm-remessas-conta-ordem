@@ -8,7 +8,7 @@ class ListaObjetos extends Secao {
     }
 
     criarLinha() {
-        const indice = this.obterIndiceUltimaLinha();
+        const indice = this.obterIndiceUltimaLinha() + 1;
 
         const linhaItem = $(`<div ${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indice}" class="row g-3"></div>`);
         const colunaBotaoRemover = $(`<div class="col-12 d-flex justify-content-end"></div>`);
@@ -65,7 +65,7 @@ class ListaObjetos extends Secao {
     }
 
     salvarCampos() {
-        const campos = this.camposLista.get(this.obterIndiceUltimaLinha() - 1);
+        const campos = this.camposLista.get(this.obterIndiceUltimaLinha());
         this.colecao.salvarCampos(campos);
     }
 
@@ -80,16 +80,15 @@ class ListaObjetos extends Secao {
     }
 
     obterIndiceUltimaLinha() {
-        return this.camposLista.size;
+        const chaves = this.camposLista.keys().toArray();
+        const indice = Math.max(...chaves);
+        return indice === -Infinity ? -1 : indice;
     }
 
     configurarTitulo(elementoSecao) {
         // const colunaSuperior = $(`<div class="col-12"></div>`);
-
         const linhaTitulo = $(`<div class="row mt-3"></div>`);
-
         const colunaTitulo = $(`<div class="col"></div>`);
-
         const tituloSecao = $(`<div class="titulo-m"></div>`);
         tituloSecao.text(this.titulo);
 
