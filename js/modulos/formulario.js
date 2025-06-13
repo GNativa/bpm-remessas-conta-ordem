@@ -40,7 +40,7 @@ const Formulario = (() => {
     async function salvarDados() {
         let dados = {};
 
-        dados.x = campos["x"].val();
+        // dados.x = campos["x"].val();
 
         return dados;
     }
@@ -51,7 +51,7 @@ const Formulario = (() => {
         repassando-os para os campos e variáveis necessárias.
      */
     function carregarDados(mapa) {
-        campos["x"].val(mapa.get("x") || "");
+        // campos["x"].val(mapa.get("x") || "");
     }
 
     // definirEstadoInicial(): void
@@ -82,14 +82,12 @@ const Formulario = (() => {
             }),
         ];
 
-        // salvarCampos(camposRemessa);
         secaoRemessa = new ListaObjetos("remessa", "Remessas", null, new ColecaoCampos(), camposRemessa, );
         secaoRemessa.gerar();
     }
 
     return {
         personalizacao,
-        campos,
         camposObrigatorios,
         camposBloqueados,
         camposOcultos,
