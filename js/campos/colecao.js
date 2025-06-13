@@ -1,17 +1,19 @@
 class ColecaoCampos {
-    static #campos = {};
+    // TODO: tornar map não estático e injetar dependência da classe no main.js
+    static #campos = new Map();
 
     constructor() {
     }
 
     obterCampo(id = "", idAgrupado = "") {
         const campos = ColecaoCampos.#campos;
+        const lista = campos.get(idAgrupado);
 
-        if (!campos.hasOwnProperty(idAgrupado)) {
+        if (!lista) {
             throw new Error(`Não há campos salvos com o ID agrupado "${idAgrupado}"`);
         }
 
-        const campoObtido = campos[idAgrupado].find((campo = new Campo()) => {
+        const campoObtido = lista.find((campo = new Campo()) => {
             return campo.id === id;
         });
 
@@ -25,11 +27,11 @@ class ColecaoCampos {
     salvarCampo(campo = new Campo()) {
         const campos = ColecaoCampos.#campos;
 
-        if (!campos.hasOwnProperty(campo.idAgrupado)) {
-            campos[campo.idAgrupado] = [];
+        if (!campos.get(campo.idAgrupado)) {
+            campos.set(campo.idAgrupado, []);
         }
 
-        const listaCampos = campos[campo.idAgrupado];
+        const listaCampos = campos.get(campo.idAgrupado);
         listaCampos.push(campo);
     }
 
@@ -46,13 +48,15 @@ class ColecaoCampos {
             throw new Error(`O ID agrupado do campo "${campo.id}" está vazio.`);
         }
 
-        if (!campos.hasOwnProperty(campo.idAgrupado) || campos[campo.idAgrupado].length === 0) {
+        const lista = campos.get(campo.idAgrupado);
+
+        if (!lista || lista.length === 0) {
             throw new Error(`Não há campos salvos com o ID agrupado "${campo.idAgrupado}".`);
         }
 
-        campos[campo.idAgrupado] = campos[campo.idAgrupado].filter((elemento) => {
+        campos.set(campo.idAgrupado, lista.filter((elemento) => {
             return elemento.id !== campo.id;
-        });
+        }));
     }
 
     removerCampos(campos = [new Campo()]) {
@@ -70,8 +74,8 @@ class ColecaoCampos {
     obterCampos() {
         const campos = [];
 
-        for (const lista in ColecaoCampos.#campos) {
-            campos.push(ColecaoCampos.#campos[lista]);
+        for (const lista of ColecaoCampos.#campos.values()) {
+            campos.push(lista);
         }
 
         return campos.flat();
@@ -80,11 +84,13 @@ class ColecaoCampos {
     obterLista(idAgrupado = "") {
         const campos = ColecaoCampos.#campos;
 
-        if (!campos.hasOwnProperty(idAgrupado)) {
+        const lista = campos.get(idAgrupado);
+
+        if (!lista) {
             throw new Error(`Não há uma lista de campos com o ID agrupado "${idAgrupado}"`);
         }
 
-        return campos[idAgrupado];
+        return lista;
     }
 
     /*
