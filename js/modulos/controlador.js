@@ -262,11 +262,16 @@ const Controlador = (() => {
         // Bloquear todos os campos caso o formulário seja acessado de modo avulso
         // Ex.: consulta da solicitação na Central de Tarefas
         if (etapa === null || !(etapa in Formulario.camposObrigatorios)) {
-            for (const campo of colecao.obterCampos()) {
-                campo.definirEdicao(false);
-                campo.sobrescreverEditabilidade(true);
-                campo.sobrescreverObrigatoriedade(true);
-            }
+            const listasCampos = colecao.obterListas().toArray();
+
+            const validacao = new Validacao(() => {
+                return true;
+            }, null, listasCampos, null, null, null,
+                listasCampos, null, null, true, true);
+
+            const validador = new Validador();
+            validador.adicionarValidacao(validacao);
+            validador.configurarValidacoes();
 
             return;
         }
