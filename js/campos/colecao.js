@@ -71,6 +71,10 @@ class ColecaoCampos {
     }
      */
 
+    obterListas() {
+        return ColecaoCampos.#campos.values();
+    }
+
     obterCampos() {
         const campos = [];
 
