@@ -5,7 +5,6 @@
 
 const Formulario = (() => {
     // Variáveis para uso em validações, consultas, etc.
-    let campos = {};
     let fontes = {};
 
     let secaoRemessa;
