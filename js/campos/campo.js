@@ -129,11 +129,11 @@ class Campo {
         return this;
     }
 
-    definirCampoMestre(campo) {
+    definirCampoMestre(campo = new Campo()) {
         this.campoMestre = campo;
     }
 
-    definirConsistenciaAtiva(validacao) {
+    definirConsistenciaAtiva(validacao = new Validacao()) {
         this.consistenciaAtiva = validacao;
     }
 

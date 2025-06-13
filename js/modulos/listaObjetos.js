@@ -69,7 +69,7 @@ class ListaObjetos extends Secao {
         this.colecao.salvarCampos(campos);
     }
 
-    removerLinha(indice) {
+    removerLinha(indice = 0) {
         $(`
             [${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indice}"],
             hr:has(+ [${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indice}"])
@@ -85,7 +85,7 @@ class ListaObjetos extends Secao {
         return indice === -Infinity ? -1 : indice;
     }
 
-    configurarTitulo(elementoSecao) {
+    configurarTitulo(elementoSecao = $("")) {
         // const colunaSuperior = $(`<div class="col-12"></div>`);
         const linhaTitulo = $(`<div class="row mt-3"></div>`);
         const colunaTitulo = $(`<div class="col"></div>`);

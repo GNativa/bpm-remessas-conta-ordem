@@ -15,7 +15,7 @@ class Secao {
         this.colecao = colecao;
     }
 
-    configurarTitulo(elementoSecao = $(``)) {
+    configurarTitulo(elementoSecao = $("")) {
         const linhaTitulo = $(`<div class="row linha-titulo"></div>`);
         const colunaTitulo = $(`<div class="col coluna-titulo"></div>`);
         const tituloSecao = $(`<div class="titulo-g"></div>`);
@@ -91,7 +91,7 @@ class Secao {
         return this;
     }
 
-    adicionarCampo(campo) {
+    adicionarCampo(campo = new Campo()) {
         this.campos.push(campo);
     }
 }
