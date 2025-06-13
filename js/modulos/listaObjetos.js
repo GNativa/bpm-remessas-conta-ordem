@@ -55,6 +55,8 @@ class ListaObjetos extends Secao {
             campo.atribuirIdAgrupado(factory.idCampo);
             campo.atribuirLinhaLista(indice);
 
+            // TODO: Efetuar configuração das validações na nova linha (camposMonitorados)
+
             linhaItem.append(campo.coluna);
             camposDaLinha.push(campo);
         }
