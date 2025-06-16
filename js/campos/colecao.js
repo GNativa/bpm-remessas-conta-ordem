@@ -1,12 +1,12 @@
 class ColecaoCampos {
-    // TODO: tornar map não estático e injetar dependência da classe no main.js
-    static #campos = new Map();
+    #campos;
 
     constructor() {
+        this.#campos = new Map();
     }
 
     obterCampo(id = "", idAgrupado = "") {
-        const campos = ColecaoCampos.#campos;
+        const campos = this.#campos;
         const lista = campos.get(idAgrupado);
 
         if (!lista) {
@@ -25,7 +25,7 @@ class ColecaoCampos {
     }
 
     salvarCampo(campo = new Campo()) {
-        const campos = ColecaoCampos.#campos;
+        const campos = this.#campos;
 
         if (!campos.get(campo.idAgrupado)) {
             campos.set(campo.idAgrupado, []);
@@ -42,7 +42,7 @@ class ColecaoCampos {
     }
 
     removerCampo(campo = new Campo()) {
-        const campos = ColecaoCampos.#campos;
+        const campos = this.#campos;
 
         if (!campo.idAgrupado) {
             throw new Error(`O ID agrupado do campo "${campo.id}" está vazio.`);
@@ -72,13 +72,13 @@ class ColecaoCampos {
      */
 
     obterListas() {
-        return ColecaoCampos.#campos.values();
+        return this.#campos.values();
     }
 
     obterCampos() {
         const campos = [];
 
-        for (const lista of ColecaoCampos.#campos.values()) {
+        for (const lista of this.#campos.values()) {
             campos.push(lista);
         }
 
@@ -86,7 +86,7 @@ class ColecaoCampos {
     }
 
     obterLista(idAgrupado = "") {
-        const campos = ColecaoCampos.#campos;
+        const campos = this.#campos;
 
         const lista = campos.get(idAgrupado);
 
