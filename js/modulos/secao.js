@@ -28,6 +28,10 @@ class Secao {
         elementoSecao.append(hr);
     }
 
+    lancarErroDeCampoDuplicado(id) {
+        throw `Já existe um campo com o id "${id}". Por gentileza, use um ID diferente.`;
+    }
+
     adicionarLinha() {
         this.criarLinha();
         this.salvarCampos();
@@ -38,7 +42,7 @@ class Secao {
 
         for (const campo of this.campos) {
             if (document.getElementById(campo.id) !== null) {
-                throw Error(`Já existe um campo com o id "${campo.id}".`);
+                this.lancarErroDeCampoDuplicado(campo.id);
             }
 
             linhaCampos.append(campo.coluna);
