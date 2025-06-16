@@ -6,6 +6,7 @@
 class Controlador {
     // TODO: Injetar dependências pelo construtor
     #validador;
+    #etapa;
     #colecao;
     #formulario;
     #inicializado;
@@ -14,7 +15,8 @@ class Controlador {
     constructor(validador, colecao, formulario) {
         // Variáveis para uso na geração e validação do formulário.
         this.#validador = validador;
-        this.colecao = colecao;
+        this.#colecao = colecao;
+        this.#etapa = null;
         this.#formulario = formulario;
         this.#inicializado = false; // Indica se o formulário foi inicializado
         this.#accessToken = null;   // Access token da plataforma
@@ -261,13 +263,14 @@ class Controlador {
         const url = new URL(window.location.toLocaleString());
         const parametros = url.searchParams;
         const etapa = parametros.get("etapa");
+        this.#etapa = etapa;
 
         const camposObrigatorios = this.#formulario.obterCamposObrigatorios();
 
         // Bloquear todos os campos caso o formulário seja acessado de modo avulso
         // Ex.: consulta da solicitação na Central de Tarefas
         if (etapa === null || !(this.#formulario.obterCamposObrigatorios().hasOwnProperty(etapa))) {
-            const listasCampos = this.colecao.obterListas().toArray();
+            const listasCampos = this.#colecao.obterListas().toArray();
 
             const validacao = new Validacao(() => {
                 return true;
@@ -346,6 +349,10 @@ class Controlador {
         Define a lista de validações do validador e as configura.
      */
     #aplicarValidacoes() {
+        if (this.#etapa === null) {
+            return;
+        }
+
         const validacoes = this.#formulario.obterValidacoes();
         this.#validador.definirValidacoes(validacoes);
         this.#validador.configurarValidacoes();
