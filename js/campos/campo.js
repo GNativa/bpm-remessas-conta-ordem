@@ -13,6 +13,10 @@ class Campo {
         this.campoFonte = campoFonte ?? null;    // Nome do campo da fonte de dados ao qual este corresponde
         this.campoMestre = null;                 // Campo mestre deste campo
 
+        if (this.fonte != null) {
+            this.fonte.inscreverCampo(this);
+        }
+
         this.tag = tag;                          // Tag do elemento HTML
         this.tipo = tipo;                        // Atributo "type" do elemento HTML, caso seja um input
         this.classes = ["campo"];                // Classes CSS do campo
