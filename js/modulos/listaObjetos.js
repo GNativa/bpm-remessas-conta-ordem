@@ -1,10 +1,19 @@
 class ListaObjetos extends Secao {
-    constructor(id, titulo, campos, colecao, factories, permiteAdicionarLinhas = true, permiteRemoverLinhas = true) {
-        super(id, titulo, campos, colecao);
-        this.factories = factories ?? [];
-        this.camposLista = new Map();
-        this.permiteAdicionarLinhas = permiteAdicionarLinhas;
-        this.permiteRemoverLinhas = permiteRemoverLinhas;
+    #colecao;
+    #factories;
+    #validador;
+    #camposLista;
+    #permiteAdicionarLinhas;
+    #permiteRemoverLinhas;
+
+    constructor(id, titulo, colecao, factories, validador, permiteAdicionarLinhas = true, permiteRemoverLinhas = true) {
+        super(id, titulo, null);
+        this.#factories = factories ?? [];
+        this.#validador = validador;
+        this.#colecao = colecao;
+        this.#camposLista = new Map();
+        this.#permiteAdicionarLinhas = permiteAdicionarLinhas;
+        this.#permiteRemoverLinhas = permiteRemoverLinhas;
     }
 
     criarLinha() {
@@ -22,7 +31,7 @@ class ListaObjetos extends Secao {
             this.removerLinha(indice);
         });
 
-        if (!this.permiteRemoverLinhas) {
+        if (!this.#permiteRemoverLinhas) {
             botaoRemover.prop("disabled", true);
         }
 
@@ -43,7 +52,7 @@ class ListaObjetos extends Secao {
 
         const camposDaLinha = [];
 
-        for (const factory of this.factories) {
+        for (const factory of this.#factories) {
             const novoId = `${factory.idCampo}${indice}`;
 
             if (document.getElementById(novoId) !== null) {
@@ -55,20 +64,24 @@ class ListaObjetos extends Secao {
             campo.atribuirIdAgrupado(factory.idCampo);
             campo.atribuirLinhaLista(indice);
 
-            // TODO: Efetuar configuração das validações na nova linha (camposMonitorados)
-
             linhaItem.append(campo.coluna);
             camposDaLinha.push(campo);
         }
 
+        /* TODO: Permitir configuração das validações por linha, mas sem duplicar para campos já configurados
+        if (indice > 0) {
+            this.validador.configurarValidacoes(camposDaLinha);
+        }
+         */
+
         this.divSecao.append(linhaItem);
         linhaItem.before(hr);
-        this.camposLista.set(indice, camposDaLinha);
+        this.#camposLista.set(indice, camposDaLinha);
     }
 
     salvarCampos() {
-        const campos = this.camposLista.get(this.obterIndiceUltimaLinha());
-        this.colecao.salvarCampos(campos);
+        const campos = this.#camposLista.get(this.obterIndiceUltimaLinha());
+        this.#colecao.salvarCampos(campos);
     }
 
     removerLinha(indice = 0) {
@@ -77,12 +90,12 @@ class ListaObjetos extends Secao {
             hr:has(+ [${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indice}"])
         `).remove();
 
-        this.colecao.removerCampos(this.camposLista.get(indice));
-        this.camposLista.delete(indice);
+        this.#colecao.removerCampos(this.#camposLista.get(indice));
+        this.#camposLista.delete(indice);
     }
 
     obterIndiceUltimaLinha() {
-        const chaves = this.camposLista.keys().toArray();
+        const chaves = this.#camposLista.keys().toArray();
         const indice = Math.max(...chaves);
         return indice === -Infinity ? -1 : indice;
     }
@@ -97,7 +110,7 @@ class ListaObjetos extends Secao {
         // colunaSuperior.append(linhaTitulo);
         linhaTitulo.append(colunaTitulo);
 
-        if (this.permiteAdicionarLinhas) {
+        if (this.#permiteAdicionarLinhas) {
             const colunaBotao = $(`<div class="col-2 d-flex justify-content-end"></div>`);
 
             const botaoNovaLinha = $(`

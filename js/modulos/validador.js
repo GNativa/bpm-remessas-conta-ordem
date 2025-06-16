@@ -1,12 +1,12 @@
 class Validacao {
-    static proximoId = 1;
+    static #proximoId = 1;
 
     constructor(ativa = () => { return false; }, feedback, camposMonitorados = [],
                 camposConsistidos = [], camposObrigatorios = [], camposOcultos = [],
                 camposDesabilitados = [], camposExibidos = [], camposHabilitados = [],
                 sobrescreverObrigatoriedade = false, sobrescreverEditabilidade = false) {
-        this.id = Validacao.proximoId;
-        Validacao.proximoId++;
+        this.id = Validacao.#proximoId;
+        Validacao.#proximoId++;
         this.ativa = ativa;
         this.feedback = feedback;
         this.camposMonitorados = camposMonitorados ?? [];
@@ -22,12 +22,18 @@ class Validacao {
 }
 
 class Validador {
+    #validacoes;
+
     constructor(validacoes = []) {
-        this.validacoes = validacoes;
+        this.#validacoes = validacoes;
     }
 
     adicionarValidacao(validacao) {
-        this.validacoes.push(validacao);
+        this.#validacoes.push(validacao);
+    }
+
+    definirValidacoes(validacoes) {
+        this.#validacoes = validacoes;
     }
 
     validarCampos() {
@@ -162,7 +168,7 @@ class Validador {
     }
 
     configurarValidacoes() {
-        for (const validacao of this.validacoes) {
+        for (const validacao of this.#validacoes) {
             //const monitorados = [...validacao.camposMonitorados];
 
             for (const campo of validacao.camposMonitorados.flat()) {

@@ -3,41 +3,67 @@
         - Mantém o estado do formulário, realizando carregamento e salvamento de dados, validações etc.
  */
 
-const Formulario = (() => {
-    // Variáveis para uso em validações, consultas, etc.
-    let fontes = {};
+class Formulario {
+    #fontes;
+    #colecao;
+    #validador;
+    #secaoRemessa;
+    #personalizacao;
+    #camposObrigatorios;
+    #camposBloqueados;
+    #camposOcultos;
 
-    let secaoRemessa;
+    constructor(colecao, validador) {
+        this.#fontes = {};
+        this.#colecao = colecao;
+        this.#validador = validador;
 
-    const personalizacao = {
-        titulo: "Remessas de venda por conta e ordem",
-    };
+        this.#personalizacao = {
+            titulo: "Remessas de venda por conta e ordem",
+        };
 
-    const camposObrigatorios = {                       // Listas dos IDs agrupados dos campos obrigatórios por etapa
-        "etapa1": [],
-    };
+        this.#camposObrigatorios = {
+            "etapa1": [],
+        };
+        this.#camposBloqueados = {
+            "etapa1": [],
+        };
+        this.#camposOcultos = {
+            "etapa1": [],
+        }
 
-    const camposBloqueados = {                         // Listas dos IDs agrupados dos campos bloqueados por etapa
-        "etapa1": [],
-    };
+        this.#secaoRemessa = null;
+    }
 
-    const camposOcultos = {                            // Listas dos IDs agrupados dos campos ocultos por etapa
-        "etapa1": [],
-    };
-
-    // obterValidacoes(): array<Validacao>
+    // gerar(): void
     /*
-        Validações a serem usadas no formulário.
+        Define os campos do formulário, agrupados por seção, e suas propriedades.
      */
-    function obterValidacoes() {
+    gerar() {
+        const camposRemessa = [
+            new CampoFactory("teste", (id) => {
+                return new CampoTexto(
+                    id, "Observações de teste", 12,
+                );
+            }),
+        ];
+
+        this.#secaoRemessa = new ListaObjetos(
+            "remessa", "Remessas", this.#colecao, camposRemessa, this.#validador
+        );
+
+        this.#secaoRemessa.gerar();
+    }
+
+    obterValidacoes() {
         return [];
     }
 
-    // salvarDados(): Promise<{}>
+    // #salvarDados(): Promise<{}>
     /*
         Guarda os dados de todos os campos em um objeto para uso na função _saveData da API do workflow.
      */
-    async function salvarDados() {
+    async salvarDados() {
         let dados = {};
 
         // dados.x = campos["x"].val();
@@ -50,7 +76,7 @@ const Formulario = (() => {
         Extrai os dados do mapa obtido como retorno da API do workflow,
         repassando-os para os campos e variáveis necessárias.
      */
-    function carregarDados(mapa) {
+    carregarDados(mapa) {
         // campos["x"].val(mapa.get("x") || "");
     }
 
@@ -58,45 +84,34 @@ const Formulario = (() => {
     /*
         Configura máscaras de campos, consultas de APIs e parâmetros diversos.
      */
-    function definirEstadoInicial() {
+    definirEstadoInicial() {
     }
 
     // configurarEventos(): void
     /*
         Configura eventos em elementos diversos.
      */
-    function configurarEventos() {
+    configurarEventos() {
         // A implementar.
     }
 
-    // gerar(): void
-    /*
-        Define os campos do formulário, agrupados por seção, e suas propriedades.
-     */
-    function gerar() {
-        const camposRemessa = [
-            new CampoFactory("teste", (id) => {
-                return new CampoTexto(
-                    id, "Observações de teste", 12,
-                );
-            }),
-        ];
-
-        secaoRemessa = new ListaObjetos("remessa", "Remessas", null, new ColecaoCampos(), camposRemessa, );
-        secaoRemessa.gerar();
+    obterFontes() {
+        return Object.freeze(this.#fontes);
     }
 
-    return {
-        personalizacao,
-        camposObrigatorios,
-        camposBloqueados,
-        camposOcultos,
-        fontes,
-        carregarDados,
-        salvarDados,
-        obterValidacoes,
-        definirEstadoInicial,
-        configurarEventos,
-        gerar
-    };
-})();
+    obterCamposObrigatorios() {
+        return Object.freeze(this.#camposObrigatorios);;
+    }
+
+    obterCamposBloqueados() {
+        return Object.freeze(this.#camposBloqueados);
+    }
+
+    obterCamposOcultos() {
+        return Object.freeze(this.#camposOcultos);
+    }
+
+    obterPersonalizacao() {
+        return Object.freeze(this.#personalizacao);
+    }
+}
