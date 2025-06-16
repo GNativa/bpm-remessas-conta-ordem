@@ -141,7 +141,7 @@ class Controlador {
 
     #notificarCampos() {
         // Disparar eventos dos campos para ativar validações
-        for (const campo of this.#colecao.obterCampos()) {
+        for (const campo of this.#colecao.obterTodosCampos()) {
             campo.notificar();
         }
     }
@@ -153,7 +153,7 @@ class Controlador {
     #listarCampos() {
         const ids = [];
 
-        for (const campo of this.#colecao.obterCampos()) {
+        for (const campo of this.#colecao.obterTodosCampos()) {
             ids.push(`"${campo.id}"`);
         }
 
@@ -265,50 +265,26 @@ class Controlador {
         const etapa = parametros.get("etapa");
         this.#etapa = etapa;
 
-        const camposObrigatorios = this.#formulario.obterCamposObrigatorios();
+        const camposObrigatorios = this.#validador.obterCamposObrigatorios();
 
         // Bloquear todos os campos caso o formulário seja acessado de modo avulso
         // Ex.: consulta da solicitação na Central de Tarefas
-        if (etapa === null || !(this.#formulario.obterCamposObrigatorios().hasOwnProperty(etapa))) {
-            const listasCampos = this.#colecao.obterListas().toArray();
-
-            const validacao = new Validacao(() => {
-                return true;
-            }, null, listasCampos, null, null, null,
-                listasCampos, null, null, true, true);
-
-            this.#validador.adicionarValidacao(validacao);
+        if (etapa === null || !(camposObrigatorios.hasOwnProperty(etapa))) {
+            const campos = this.#colecao.obterTodosCampos();
+            this.#validador.definirValidacoes(this.#formulario.obterValidacoes());
             this.#validador.configurarValidacoes();
+
+            for (const campo of campos) {
+                campo.definirObrigatoriedade(false);
+                campo.sobrescreverObrigatoriedade(true);
+                campo.definirEdicao(false);
+                campo.sobrescreverEdicao(true);
+            }
 
             return;
         }
 
-        const camposBloqueados = this.#formulario.obterCamposBloqueados();
-        const camposOcultos = this.#formulario.obterCamposOcultos();
-
-        for (const idCampo of camposObrigatorios[etapa]) {
-            const lista = this.#colecao.obterLista(idCampo);
-
-            lista.forEach((campo = new Campo()) => campo.definirObrigatoriedade(true));
-        }
-
-        for (const idCampo of camposBloqueados[etapa]) {
-            const lista = this.#colecao.obterLista(idCampo);
-
-            lista.forEach((campo = new Campo()) => {
-                campo.definirEdicao(false);
-                campo.sobrescreverEditabilidade(true);
-            });
-        }
-
-        for (const idCampo of camposOcultos[etapa]) {
-            const lista = this.#colecao.obterLista(idCampo);
-
-            lista.forEach((campo = new Campo()) => {
-                campo.definirVisibilidade(false);
-                campo.sobrescreverVisibilidade(true);
-            });
-        }
+        this.#validador.configurarValidacoesFixas(this.#colecao, 0);
     }
 
     // configurarElementosFixos(): void
@@ -354,7 +330,11 @@ class Controlador {
         }
 
         const validacoes = this.#formulario.obterValidacoes();
-        this.#validador.definirValidacoes(validacoes);
+
+        for (const validacao of validacoes) {
+            this.#validador.adicionarValidacao(validacao);
+        }
+
         this.#validador.configurarValidacoes();
     }
 }

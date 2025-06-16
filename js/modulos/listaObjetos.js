@@ -55,8 +55,9 @@ class ListaObjetos extends Secao {
         for (const factory of this.#factories) {
             const novoId = `${factory.idCampo}${indice}`;
 
-            if (document.getElementById(novoId) !== null) {
-                throw Error(`Já existe um campo com o id "${novoId}".`);
+            if (camposDaLinha.find((campo) => campo.id === novoId)
+             || document.getElementById(novoId) !== null) {
+                this.lancarErroDeCampoDuplicado(factory.idCampo);
             }
 
             const campo = factory.construir(novoId);
@@ -78,6 +79,7 @@ class ListaObjetos extends Secao {
         this.#colecao.salvarCampos(campos);
 
         if (this.obterIndiceUltimaLinha() > 0) {
+            this.#validador.configurarValidacoesFixas(this.#colecao, this.obterIndiceUltimaLinha());
             this.#validador.configurarValidacoes();
         }
     }
@@ -88,7 +90,10 @@ class ListaObjetos extends Secao {
             hr:has(+ [${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indice}"])
         `).remove();
 
-        this.#colecao.removerCampos(this.#camposLista.get(indice));
+        const lista = this.#camposLista.get(indice);
+        this.#colecao.removerCampos(lista);
+        this.#validador.removerCamposValidados(lista);
+
         this.#camposLista.delete(indice);
     }
 
