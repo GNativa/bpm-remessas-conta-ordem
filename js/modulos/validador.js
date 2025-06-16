@@ -23,9 +23,11 @@ class Validacao {
 
 class Validador {
     #validacoes;
+    #camposJaConfigurados;
 
     constructor(validacoes = []) {
         this.#validacoes = validacoes;
+        this.#camposJaConfigurados = [];
     }
 
     adicionarValidacao(validacao) {
@@ -74,7 +76,7 @@ class Validador {
     // Executar uma função de configuração para uma determinada validação com base
     // em um campo monitorado e em campos que devem se tornar obrigatórios, serem exibidos, escondidos, etc.,
     // conforme a validação
-    configurarValidacao(
+    #configurarValidacao(
         validacao = new Validacao(),
         campoMonitorado = new Campo(),
         campos = [new Campo()],
@@ -94,7 +96,7 @@ class Validador {
     }
 
     configurarParaUmCampo(validacao = new Validacao(), campo = new Campo()) {
-        this.configurarValidacao(
+        this.#configurarValidacao(
             validacao,
             campo,
             validacao.camposConsistidos.flat(),
@@ -119,7 +121,7 @@ class Validador {
             }
         );
 
-        this.configurarValidacao(
+        this.#configurarValidacao(
             validacao,
             campo,
             validacao.camposObrigatorios.flat(),
@@ -128,7 +130,7 @@ class Validador {
             }
         );
 
-        this.configurarValidacao(
+        this.#configurarValidacao(
             validacao,
             campo,
             validacao.camposOcultos.flat(),
@@ -137,7 +139,7 @@ class Validador {
             }
         );
 
-        this.configurarValidacao(
+        this.#configurarValidacao(
             validacao,
             campo,
             validacao.camposDesabilitados.flat(),
@@ -146,7 +148,7 @@ class Validador {
             }
         );
 
-        this.configurarValidacao(
+        this.#configurarValidacao(
             validacao,
             campo,
             validacao.camposExibidos.flat(),
@@ -155,7 +157,7 @@ class Validador {
             }
         );
 
-        this.configurarValidacao(
+        this.#configurarValidacao(
             validacao,
             campo,
             validacao.camposHabilitados.flat(),
@@ -169,10 +171,17 @@ class Validador {
 
     configurarValidacoes() {
         for (const validacao of this.#validacoes) {
-            //const monitorados = [...validacao.camposMonitorados];
+            let camposMonitorados = validacao.camposMonitorados.flat();
 
-            for (const campo of validacao.camposMonitorados.flat()) {
-                this.configurarParaUmCampo(validacao, campo)
+            if (this.#camposJaConfigurados.length > 0) {
+                camposMonitorados = camposMonitorados.filter((campo) => {
+                    return this.#camposJaConfigurados.indexOf(campo) === -1;
+                });
+            }
+
+            for (const campo of camposMonitorados) {
+                this.configurarParaUmCampo(validacao, campo);
+                this.#camposJaConfigurados.push(campo);
             }
         }
     }

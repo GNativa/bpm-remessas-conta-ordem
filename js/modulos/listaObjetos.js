@@ -68,12 +68,6 @@ class ListaObjetos extends Secao {
             camposDaLinha.push(campo);
         }
 
-        /* TODO: Permitir configuração das validações por linha, mas sem duplicar para campos já configurados
-        if (indice > 0) {
-            this.validador.configurarValidacoes(camposDaLinha);
-        }
-         */
-
         this.divSecao.append(linhaItem);
         linhaItem.before(hr);
         this.#camposLista.set(indice, camposDaLinha);
@@ -82,6 +76,10 @@ class ListaObjetos extends Secao {
     salvarCampos() {
         const campos = this.#camposLista.get(this.obterIndiceUltimaLinha());
         this.#colecao.salvarCampos(campos);
+
+        if (this.obterIndiceUltimaLinha() > 0) {
+            this.#validador.configurarValidacoes();
+        }
     }
 
     removerLinha(indice = 0) {
