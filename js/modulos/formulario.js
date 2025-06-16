@@ -22,15 +22,17 @@ class Formulario {
             titulo: "Remessas de venda por conta e ordem",
         };
 
-        this.#camposObrigatorios = {
+        this.#validador.definirCamposObrigatorios({
+            "etapa1": ["dataEmissao", "empresa", "filial"],
+        });
+
+        this.#validador.definirCamposBloqueados({
             "etapa1": [],
-        };
-        this.#camposBloqueados = {
+        });
+
+        this.#validador.definirCamposOcultos({
             "etapa1": [],
-        };
-        this.#camposOcultos = {
-            "etapa1": [],
-        }
+        });
 
         this.#secaoRemessa = null;
     }
@@ -41,10 +43,49 @@ class Formulario {
      */
     gerar() {
         const camposRemessa = [
-            new CampoFactory("teste", (id) => {
-                return new CampoTexto(
-                    id, "Observações de teste", 12,
-                );
+            new CampoFactory("dataEmissao", (id) => {
+                return new CampoData(id, "Data de emissão", 2);
+            }),
+            new CampoFactory("empresa", (id) => {
+                return new CampoTexto(id, "Empresa", 2);
+            }),
+            new CampoFactory("filial", (id) => {
+                return new CampoTexto(id, "Filial", 2);
+            }),
+            new CampoFactory("serie", (id) => {
+                return new CampoTexto(id, "Série", 2);
+            }),
+            new CampoFactory("contrato", (id) => {
+                return new CampoTexto(id, "Contrato", 2);
+            }),
+            new CampoFactory("remessa", (id) => {
+                return new CampoTexto(id, "Remessa", 2);
+            }),
+            new CampoFactory("situacao", (id) => {
+                return new CampoTexto(id, "Situação", 4);
+            }),
+            new CampoFactory("situacaoDocEletronico", (id) => {
+                return new CampoTexto(id, "Situação do documento eletrônico", 4);
+            }),
+            new CampoFactory("cliente", (id) => {
+                return new CampoTexto(id, "Cliente", 2);
+            }),
+            new CampoFactory("notaVenda", (id) => {
+                return new CampoTexto(id, "Nota de venda", 2);
+            }),
+            new CampoFactory("serieLegalVenda", (id) => {
+                return new CampoTexto(id, "Série legal da nota de venda", 2);
+            }),
+            new CampoFactory("safra", (id) => {
+                return new CampoTexto(id, "Safra", 2);
+            }),
+            new CampoFactory("observacaoNotaVenda", (id) => {
+                return new CampoTexto(id, "Observação da nota de venda", 8, null, null, null, null, null, null, 5);
+            }),
+            new CampoFactory("numeroNotaRecebida", (id) => {
+                return new CampoTexto(id, "Nota recebida", 2);
+            }),new CampoFactory("dataEmissaoNotaRecebida", (id) => {
+                return new CampoTexto(id, "Data de emissão da nota recebida", 2);
             }),
         ];
 
@@ -97,18 +138,6 @@ class Formulario {
 
     obterFontes() {
         return Object.freeze(this.#fontes);
-    }
-
-    obterCamposObrigatorios() {
-        return Object.freeze(this.#camposObrigatorios);;
-    }
-
-    obterCamposBloqueados() {
-        return Object.freeze(this.#camposBloqueados);
-    }
-
-    obterCamposOcultos() {
-        return Object.freeze(this.#camposOcultos);
     }
 
     obterPersonalizacao() {
