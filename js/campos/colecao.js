@@ -5,7 +5,7 @@ class ColecaoCampos {
         this.#campos = new Map();
     }
 
-    obterCampo(id = "", idAgrupado = "") {
+    obterCampoIndividual(id = "", idAgrupado = "") {
         const campos = this.#campos;
         const lista = campos.get(idAgrupado);
 
@@ -23,6 +23,8 @@ class ColecaoCampos {
 
         return campoObtido;
     }
+
+
 
     salvarCampo(campo = new Campo()) {
         const campos = this.#campos;
@@ -65,17 +67,11 @@ class ColecaoCampos {
         }
     }
 
-    /*
-    #campos = {
-        "id": [campo, campo, campo],
-    }
-     */
-
     obterListas() {
         return this.#campos.values();
     }
 
-    obterCampos() {
+    obterTodosCampos() {
         const campos = [];
 
         for (const lista of this.#campos.values()) {
@@ -85,7 +81,7 @@ class ColecaoCampos {
         return campos.flat();
     }
 
-    obterLista(idAgrupado = "") {
+    obter(idAgrupado = "") {
         const campos = this.#campos;
 
         const lista = campos.get(idAgrupado);
