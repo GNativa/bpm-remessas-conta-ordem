@@ -113,12 +113,56 @@ class Formulario {
         return dados;
     }
 
-    // carregarDados(mapa: Map): void
+    carregarDadosFluxo(mapa) {
+        const remessas = mapa.get("remessas");
+
+        for (let i = 0; i < remessas.length; i++) {
+            const indice = this.#secaoRemessa.obterIndiceUltimaLinha();
+
+            const dataEmissao = this.#colecao.obterCampoPorLinha("dataEmissao", indice);
+            dataEmissao.val(remessas[i]["remessas_data_emissao"]);
+
+            const empresa = this.#colecao.obterCampoPorLinha("empresa", indice);
+            empresa.val(remessas[i]["remessas_empresa"].toFixed(0));
+
+            const filial = this.#colecao.obterCampoPorLinha("filial", indice);
+            filial.val(remessas[i]["remessas_filial"].toFixed(0));
+
+            const serie = this.#colecao.obterCampoPorLinha("serie", indice);
+            serie.val(remessas[i]["remessas_serie"]);
+
+            const contrato = this.#colecao.obterCampoPorLinha("contrato", indice);
+            contrato.val(remessas[i]["remessas_contrato"]);
+
+            const remessa = this.#colecao.obterCampoPorLinha("remessa", indice);
+            remessa.val(remessas[i]["remessas_numero"].toFixed(0));
+
+            const situacao = this.#colecao.obterCampoPorLinha("situacao", indice);
+            situacao.val(remessas[i]["remessas_situacao"]);
+
+            const situacaoDocEletronico = this.#colecao.obterCampoPorLinha("situacaoDocEletronico", indice);
+            situacaoDocEletronico.val(remessas[i]["remessas_situacao_documento_eletronico"]);
+
+            const cliente = this.#colecao.obterCampoPorLinha("cliente", indice);
+            cliente.val(remessas[i]["remessas_cliente"].toFixed(0));
+
+            const notaVenda = this.#colecao.obterCampoPorLinha("notaVenda", indice);
+            notaVenda.val(remessas[i]["remessas_nota_venda"].toFixed(0));
+
+            const observacaoNotaVenda = this.#colecao.obterCampoPorLinha("observacaoNotaVenda", indice);
+            observacaoNotaVenda.val(remessas[i]["remessas_observacao_nota_venda"]);
+
+            this.#secaoRemessa.adicionarLinha();
+        }
+    }
+
+    // carregarDadosFormulario(mapa: Map): void
     /*
         Extrai os dados do mapa obtido como retorno da API do workflow,
         repassando-os para os campos e variáveis necessárias.
      */
-    carregarDados(mapa) {
+    carregarDadosFormulario(mapa) {
+
         // campos["x"].val(mapa.get("x") || "");
     }
 

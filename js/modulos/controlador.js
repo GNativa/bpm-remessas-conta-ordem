@@ -41,9 +41,17 @@ class Controlador {
         com o uso do token do usuário.
      */
      _init(data, info, controlador) {
-         controlador.inicializar();
-        const {initialVariables} = data["loadContext"];
+        controlador.inicializar();
+        const { initialVariables } = data["loadContext"];
         console.log(initialVariables);
+        const mapa = new Map();
+
+        for (const prop in initialVariables) {
+            mapa.set(prop, initialVariables[prop]);
+        }
+
+        console.log("Carregando dados do fluxo: ", mapa);
+        controlador.formulario.carregarDadosFluxo(mapa);
 
         info["getUserData"]()
             .then(function (user) {
@@ -77,15 +85,15 @@ class Controlador {
             .then((data) => {
                 console.log(data);
 
-                if (!info["isRequestNew"]() && Array.isArray(data)) {
+                if ((!info["isRequestNew"]() && Array.isArray(data))) {
                     const mapa = new Map();
 
                     for (let i = 0; i < data.length; i++) {
                         mapa.set(data[i].key, data[i].value || "");
                     }
 
-                    console.log("Carregando dados: ", mapa);
-                    controlador.formulario.carregarDados(mapa);
+                    console.log("Carregando dados do formulário: ", mapa);
+                    controlador.formulario.carregarDadosFormulario(mapa);
 
                     // Disparar eventos dos campos para ativar validações
                     controlador.notificarCampos();

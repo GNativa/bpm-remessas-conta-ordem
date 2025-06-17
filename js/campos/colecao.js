@@ -5,7 +5,7 @@ class ColecaoCampos {
         this.#campos = new Map();
     }
 
-    obterCampoIndividual(id = "", idAgrupado = "") {
+    obterCampoPorLinha(idAgrupado, linha) {
         const campos = this.#campos;
         const lista = campos.get(idAgrupado);
 
@@ -14,17 +14,26 @@ class ColecaoCampos {
         }
 
         const campoObtido = lista.find((campo = new Campo()) => {
-            return campo.id === id;
+            return campo.linhaLista === linha;
         });
 
         if (!campoObtido) {
-            throw new Error(`Não há nenhum campo salvo com o ID "${id}"`);
+            throw new Error(`Não há nenhum campo salvo com o ID "${idAgrupado}" na linha ${linha}.`);
         }
 
         return campoObtido;
     }
 
+    obterCampo(id) {
+        const campos = this.#campos;
+        let campo = campos.get(id)[0];
 
+        if (!campo) {
+            throw new Error(`Não há nenhum campo salvo com o ID "${id}"`);
+        }
+
+        return campo;
+    }
 
     salvarCampo(campo = new Campo()) {
         const campos = this.#campos;
