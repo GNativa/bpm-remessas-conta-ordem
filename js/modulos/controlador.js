@@ -4,13 +4,13 @@
  */
 
 class Controlador {
-    // TODO: Injetar dependências pelo construtor
     #validador;
     #etapa;
     #colecao;
     #formulario;
     #inicializado;
     #accessToken;
+    workflowCockpit;
 
     constructor(validador, colecao, formulario) {
         // Variáveis para uso na geração e validação do formulário.
@@ -23,10 +23,14 @@ class Controlador {
 
         // Interface da API do workflow (BPM) que lida com a inicialização, salvamento de dados e erros do formulário.
         // Função "_rollback" não implementada até o momento
+        const init = this._init;
+        const saveData = this._saveData;
+        const onError = this._rollback;
+
         this.workflowCockpit = workflowCockpit({
-            init: this._init,
-            onSubmit: this._saveData,
-            onError: this._rollback,
+            init: init,
+            onSubmit: saveData,
+            onError: onError,
         });
     }
 
