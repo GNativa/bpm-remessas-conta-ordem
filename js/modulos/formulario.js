@@ -123,10 +123,10 @@ class Formulario {
             dataEmissao.val(remessas[i]["remessas_data_emissao"].slice(0,10));
 
             const empresa = this.#colecao.obterCampoPorLinha("empresa", indice);
-            empresa.val(remessas[i]["remessas_empresa"].toFixed(0));
+            empresa.val(Number(remessas[i]["remessas_empresa"]));
 
             const filial = this.#colecao.obterCampoPorLinha("filial", indice);
-            filial.val(remessas[i]["remessas_filial"].toFixed(0));
+            filial.val(Number(remessas[i]["remessas_filial"]));
 
             const serie = this.#colecao.obterCampoPorLinha("serie", indice);
             serie.val(remessas[i]["remessas_serie"]);
@@ -135,7 +135,7 @@ class Formulario {
             contrato.val(remessas[i]["remessas_contrato"]);
 
             const remessa = this.#colecao.obterCampoPorLinha("remessa", indice);
-            remessa.val(remessas[i]["remessas_numero"].toFixed(0));
+            remessa.val(Number(remessas[i]["remessas_numero"]));
 
             const situacao = this.#colecao.obterCampoPorLinha("situacao", indice);
             situacao.val(remessas[i]["remessas_situacao"]);
@@ -144,13 +144,13 @@ class Formulario {
             situacaoDocEletronico.val(remessas[i]["remessas_situacao_documento_eletronico"]);
 
             const cliente = this.#colecao.obterCampoPorLinha("cliente", indice);
-            cliente.val(remessas[i]["remessas_cliente"].toFixed(0));
+            cliente.val(Number(remessas[i]["remessas_cliente"]));
 
             const notaVenda = this.#colecao.obterCampoPorLinha("notaVenda", indice);
-            notaVenda.val(remessas[i]["remessas_nota_venda"].toFixed(0));
+            notaVenda.val(Number(remessas[i]["remessas_nota_venda"]));
 
             const serieLegalNotaVenda = this.#colecao.obterCampoPorLinha("serieLegalNotaVenda", indice);
-            serieLegalNotaVenda.val(remessas[i]["remessas_serie_legal_nota_venda"].toFixed(0));
+            serieLegalNotaVenda.val(Number(remessas[i]["remessas_serie_legal_nota_venda"]));
 
             const observacaoNotaVenda = this.#colecao.obterCampoPorLinha("observacaoNotaVenda", indice);
             observacaoNotaVenda.val(remessas[i]["remessas_observacao_nota_venda"]);
