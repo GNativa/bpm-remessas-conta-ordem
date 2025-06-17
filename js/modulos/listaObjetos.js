@@ -79,7 +79,7 @@ class ListaObjetos extends Secao {
         this.#colecao.salvarCampos(campos);
 
         if (this.obterIndiceUltimaLinha() > 0) {
-            this.#validador.configurarValidacoesFixas(this.#colecao, this.obterIndiceUltimaLinha());
+            this.#validador.configurarValidacoesFixas(Utilitario.obterEtapa(), this.#colecao, this.obterIndiceUltimaLinha());
             this.#validador.configurarValidacoes();
         }
     }

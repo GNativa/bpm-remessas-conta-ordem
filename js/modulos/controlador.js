@@ -260,31 +260,8 @@ class Controlador {
         O "&" ao final é adicionado para considerar os parâmetros inseridos na URL pelo próprio Senior X.
      */
     #configurarEtapa() {
-        const url = new URL(window.location.toLocaleString());
-        const parametros = url.searchParams;
-        const etapa = parametros.get("etapa");
-        this.#etapa = etapa;
-
-        const camposObrigatorios = this.#validador.obterCamposObrigatorios();
-
-        // Bloquear todos os campos caso o formulário seja acessado de modo avulso
-        // Ex.: consulta da solicitação na Central de Tarefas
-        if (etapa === null || !(camposObrigatorios.hasOwnProperty(etapa))) {
-            const campos = this.#colecao.obterTodosCampos();
-            this.#validador.definirValidacoes(this.#formulario.obterValidacoes());
-            this.#validador.configurarValidacoes();
-
-            for (const campo of campos) {
-                campo.definirObrigatoriedade(false);
-                campo.sobrescreverObrigatoriedade(true);
-                campo.definirEdicao(false);
-                campo.sobrescreverEdicao(true);
-            }
-
-            return;
-        }
-
-        this.#validador.configurarValidacoesFixas(this.#colecao, 0);
+        this.#etapa = Utilitario.obterEtapa();
+        this.#validador.configurarValidacoesFixas(this.#etapa, this.#colecao, 0);
     }
 
     // configurarElementosFixos(): void

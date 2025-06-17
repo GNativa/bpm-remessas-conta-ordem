@@ -228,10 +228,36 @@ class Validador {
         return Object.freeze(this.#camposOcultos);
     }
 
-    configurarValidacoesFixas(colecao, linha) {
+    #obterCampo(colecao, idCampo, linha) {
+        return colecao.obter(idCampo).find((campo) => {
+            return campo.linhaLista === null || campo.linhaLista === linha;
+        });
+    }
+
+    configurarValidacoesFixas(etapa, colecao, linha) {
+        // Bloquear todos os campos caso o formulário seja acessado de modo avulso
+        // Ex.: consulta da solicitação na Central de Tarefas
+        if (etapa === null || !(this.obterCamposObrigatorios().hasOwnProperty(etapa))) {
+            const campos = colecao.obterTodosCampos().filter((campo) => {
+                return this.#camposJaConfigurados.indexOf(campo) === -1
+                    && (campo.linhaLista === null || campo.linhaLista === linha);
+            });
+
+            for (const campo of campos) {
+                campo.definirObrigatoriedade(false);
+                campo.sobrescreverObrigatoriedade(true);
+                campo.definirEdicao(false);
+                campo.sobrescreverEdicao(true);
+
+                this.#camposJaConfigurados.push(campo);
+            }
+
+            return;
+        }
+
         for (const etapa in this.#camposObrigatorios) {
             for (const idCampo of this.#camposObrigatorios[etapa]) {
-                const campo = colecao.obter(idCampo)[linha];
+                const campo = this.#obterCampo(colecao, idCampo, linha);
 
                 campo.definirObrigatoriedade(true);
             }
@@ -239,7 +265,7 @@ class Validador {
 
         for (const etapa in this.#camposBloqueados) {
             for (const idCampo of this.#camposBloqueados[etapa]) {
-                const campo = colecao.obter(idCampo)[linha];
+                const campo = this.#obterCampo(colecao, idCampo, linha);
 
                 campo.definirEdicao(true);
                 campo.sobrescreverEditabilidade(true);
@@ -248,7 +274,7 @@ class Validador {
 
         for (const etapa in this.#camposOcultos) {
             for (const idCampo of this.#camposOcultos[etapa]) {
-                const campo = colecao.obter(idCampo)[linha];
+                const campo = this.#obterCampo(colecao, idCampo, linha);
 
                 campo.definirVisibilidade(false);
                 campo.sobrescreverVisibilidade(true);
