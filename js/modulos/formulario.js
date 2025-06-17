@@ -73,7 +73,7 @@ class Formulario {
             new CampoFactory("notaVenda", (id) => {
                 return new CampoTexto(id, "Nota de venda", 2);
             }),
-            new CampoFactory("serieLegalVenda", (id) => {
+            new CampoFactory("serieLegalNotaVenda", (id) => {
                 return new CampoTexto(id, "Série legal da nota de venda", 2);
             }),
             new CampoFactory("safra", (id) => {
