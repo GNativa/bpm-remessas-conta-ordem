@@ -118,6 +118,10 @@ class Formulario {
         const remessas = mapa.get("remessas");
 
         for (let i = 0; i < remessas.length; i++) {
+            if (i > 0) {
+                this.#secaoRemessa.adicionarLinha();
+            }
+
             const indice = this.#secaoRemessa.obterIndiceUltimaLinha();
 
             const dataEmissao = this.#colecao.obterCampoPorLinha("dataEmissao", indice);
@@ -155,8 +159,6 @@ class Formulario {
 
             const observacaoNotaVenda = this.#colecao.obterCampoPorLinha("observacaoNotaVenda", indice);
             observacaoNotaVenda.val(remessas[i]["remessas_observacao_nota_venda"]);
-
-            this.#secaoRemessa.adicionarLinha();
         }
     }
 

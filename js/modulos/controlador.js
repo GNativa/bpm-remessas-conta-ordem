@@ -85,7 +85,7 @@ class Controlador {
             .then((data) => {
                 console.log(data);
 
-                if ((!info["isRequestNew"]() && Array.isArray(data))) {
+                if (!info["isRequestNew"]() && Array.isArray(data)) {
                     const mapa = new Map();
 
                     for (let i = 0; i < data.length; i++) {
