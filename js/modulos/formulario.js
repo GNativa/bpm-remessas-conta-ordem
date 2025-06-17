@@ -25,7 +25,7 @@ class Formulario {
 
         this.#validador.definirCamposBloqueados({
             "etapaUnica": ["dataEmissao", "empresa", "filial", "serie", "contrato", "remessa", "situacao",
-                "situacaoDocEletronico", "cliente", "notaVenda", "serieLegalVenda", "safra", "observacaoNotaVenda"],
+                "situacaoDocEletronico", "cliente", "notaVenda", "serieLegalNotaVenda", "safra", "observacaoNotaVenda"],
         });
 
         this.#validador.definirCamposOcultos({
@@ -84,7 +84,8 @@ class Formulario {
             }),
             new CampoFactory("numeroNotaRecebida", (id) => {
                 return new CampoTexto(id, "Nota recebida", 2);
-            }),new CampoFactory("dataEmissaoNotaRecebida", (id) => {
+            }),
+            new CampoFactory("dataEmissaoNotaRecebida", (id) => {
                 return new CampoData(id, "Data de emissão", 2);
             }),
         ];
