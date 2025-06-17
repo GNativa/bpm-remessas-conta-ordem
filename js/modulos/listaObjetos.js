@@ -37,7 +37,7 @@ class ListaObjetos extends Secao {
 
         const hr = $("<hr>");
 
-        if (indice === 0) {
+        if (indice === 0 || Utilitario.obterEtapa() === null) {
             botaoRemover.prop("disabled", true);
             hr.addClass("border-2");
         }
@@ -122,9 +122,14 @@ class ListaObjetos extends Secao {
                 </button>
             `);
 
-            botaoNovaLinha.on("click", () => {
-                this.adicionarLinha();
-            });
+            if (Utilitario.obterEtapa() !== null) {
+                botaoNovaLinha.on("click", () => {
+                    this.adicionarLinha();
+                });
+            }
+            else {
+                botaoNovaLinha.prop("disabled", true);
+            }
 
             colunaBotao.append(botaoNovaLinha);
             linhaTitulo.append(colunaBotao);
