@@ -120,7 +120,7 @@ class Formulario {
             const indice = this.#secaoRemessa.obterIndiceUltimaLinha();
 
             const dataEmissao = this.#colecao.obterCampoPorLinha("dataEmissao", indice);
-            dataEmissao.val(remessas[i]["remessas_data_emissao"]);
+            dataEmissao.val(Date.parse(remessas[i]["remessas_data_emissao"]));
 
             const empresa = this.#colecao.obterCampoPorLinha("empresa", indice);
             empresa.val(remessas[i]["remessas_empresa"].toFixed(0));
