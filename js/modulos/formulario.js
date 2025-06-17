@@ -149,6 +149,9 @@ class Formulario {
             const notaVenda = this.#colecao.obterCampoPorLinha("notaVenda", indice);
             notaVenda.val(remessas[i]["remessas_nota_venda"].toFixed(0));
 
+            const serieLegalNotaVenda = this.#colecao.obterCampoPorLinha("serieLegalNotaVenda", indice);
+            serieLegalNotaVenda.val(remessas[i]["remessas_serie_legal_nota_venda"].toFixed(0));
+
             const observacaoNotaVenda = this.#colecao.obterCampoPorLinha("observacaoNotaVenda", indice);
             observacaoNotaVenda.val(remessas[i]["remessas_observacao_nota_venda"]);
 
