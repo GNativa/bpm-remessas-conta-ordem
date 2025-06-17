@@ -7,9 +7,9 @@ class Controlador {
     #validador;
     #etapa;
     #colecao;
-    #formulario;
+    formulario;
     #inicializado;
-    #accessToken;
+    accessToken;
     workflowCockpit;
 
     constructor(validador, colecao, formulario) {
@@ -17,20 +17,20 @@ class Controlador {
         this.#validador = validador;
         this.#colecao = colecao;
         this.#etapa = null;
-        this.#formulario = formulario;
+        this.formulario = formulario;
         this.#inicializado = false; // Indica se o formulário foi inicializado
-        this.#accessToken = null;   // Access token da plataforma
+        this.accessToken = null;   // Access token da plataforma
 
         // Interface da API do workflow (BPM) que lida com a inicialização, salvamento de dados e erros do formulário.
         // Função "_rollback" não implementada até o momento
-        const init = this._init;
-        const saveData = this._saveData;
-        const onError = this._rollback;
-
         this.workflowCockpit = workflowCockpit({
-            init: init,
-            onSubmit: saveData,
-            onError: onError,
+            init: (data, info) => {
+                this._init(data, info, this);
+            },
+            onSubmit: async (data, info) => {
+                await this._saveData(data, info, this);
+            },
+            onError: this._rollback,
         });
     }
 
@@ -40,8 +40,8 @@ class Controlador {
         Também será responsável por carregar as fontes de dados
         com o uso do token do usuário.
      */
-     _init(data, info) {
-        this.inicializar();
+     _init(data, info, controlador) {
+         controlador.inicializar();
         const {initialVariables} = data["loadContext"];
         console.log(initialVariables);
 
@@ -65,7 +65,7 @@ class Controlador {
                 return info["getPlatformData"]();
             })
             .then((dados) => {
-                this.#accessToken = dados["token"]["access_token"];
+                controlador.accessToken = dados["token"]["access_token"];
                 return info["getInfoFromProcessVariables"]();
                 //return carregarFontes(dados);
             })
@@ -85,10 +85,10 @@ class Controlador {
                     }
 
                     console.log("Carregando dados: ", mapa);
-                    this.#formulario.carregarDados(mapa);
+                    controlador.formulario.carregarDados(mapa);
 
                     // Disparar eventos dos campos para ativar validações
-                    this.#notificarCampos();
+                    controlador.notificarCampos();
                 }
             })
             .catch(function (error) {
@@ -105,10 +105,10 @@ class Controlador {
     /*
         Valida o formulário e salva os dados na API do Workflow.
      */
-    async _saveData(data, info) {
-        this.#validarFormulario();
+    async _saveData(data, info, controlador) {
+        controlador.validarFormulario();
 
-        let dados = await this.#formulario.salvarDados();
+        let dados = await controlador.formulario.salvarDados();
         console.log(dados);
 
         return {
@@ -131,9 +131,9 @@ class Controlador {
 
         this.#configurarElementosFixos();
 
-        this.#formulario.gerar();
-        this.#formulario.configurarEventos();
-        this.#formulario.definirEstadoInicial();
+        this.formulario.gerar();
+        this.formulario.configurarEventos();
+        this.formulario.definirEstadoInicial();
 
         // this.listarCampos();
         this.#configurarPlugins();
@@ -143,7 +143,7 @@ class Controlador {
         this.#inicializado = true;
     }
 
-    #notificarCampos() {
+    notificarCampos() {
         // Disparar eventos dos campos para ativar validações
         for (const campo of this.#colecao.obterTodosCampos()) {
             campo.notificar();
@@ -171,7 +171,7 @@ class Controlador {
      */
     async #carregarFontes(dadosPlataforma) {
         const token = dadosPlataforma["token"]["access_token"];
-        const fontes = this.#formulario.obterFontes();
+        const fontes = this.formulario.obterFontes();
 
         for (const nomeFonte in Formulario.fontes) {
             const fonte = Formulario.fontes[nomeFonte];
@@ -241,7 +241,7 @@ class Controlador {
         Caso o formulário seja inválido, um erro é lançado para impedir que a plataforma prossiga
         com o envio dos dados.
      */
-    #validarFormulario() {
+    validarFormulario() {
         this.#validador.validarCampos();
 
         const titulo = "Validação";
@@ -274,11 +274,11 @@ class Controlador {
         do formulário.
      */
     #configurarElementosFixos() {
-        const personalizacao = this.#formulario.obterPersonalizacao();
+        const personalizacao = this.formulario.obterPersonalizacao();
 
         $("#tituloFormulario").text(personalizacao.titulo);
         $("#botaoEnviar").on("click", () => {
-            this.#validarFormulario();
+            this.validarFormulario();
         });
 
         // Configurar esquema de cores com base nas preferências do usuário
@@ -310,7 +310,7 @@ class Controlador {
             return;
         }
 
-        const validacoes = this.#formulario.obterValidacoes();
+        const validacoes = this.formulario.obterValidacoes();
 
         for (const validacao of validacoes) {
             this.#validador.adicionarValidacao(validacao);
