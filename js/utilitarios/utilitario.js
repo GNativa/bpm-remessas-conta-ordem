@@ -102,11 +102,18 @@ const Utilitario = (() => {
         return () => Array.from(funcao?.() ?? []);
     }
 
+    const obterEtapa = function() {
+        const url = new URL(window.location.toLocaleString());
+        const parametros = url.searchParams;
+        return parametros.get("etapa");
+    }
+
     return {
         salvarArquivosEmString,
         carregarArquivosDeString,
         obterDicionario,
         filtrarDados,
         criarGetterDeArray,
+        obterEtapa,
     };
 })();
