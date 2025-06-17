@@ -1,20 +1,17 @@
 /*
     > Formulário
-        - Mantém o estado do formulário, realizando carregamento e salvamento de dados, validações etc.
+        - Mantém o estado do formulário, realizando carregamento e salvamento de dados, validações, etc.
  */
 
 class Formulario {
-    #fontes;
+    #fontes = {};
     #colecao;
     #validador;
-    #secaoRemessa;
+    #secaoControle = null;
+    #secaoRemessa = null;
     #personalizacao;
-    #camposObrigatorios;
-    #camposBloqueados;
-    #camposOcultos;
 
     constructor(colecao, validador) {
-        this.#fontes = {};
         this.#colecao = colecao;
         this.#validador = validador;
 
@@ -23,18 +20,17 @@ class Formulario {
         };
 
         this.#validador.definirCamposObrigatorios({
-            "etapa1": ["dataEmissao", "empresa", "filial"],
+            "etapaUnica": ["numeroNotaRecebida", "dataEmissaoNotaRecebida"],
         });
 
         this.#validador.definirCamposBloqueados({
-            "etapa1": [],
+            "etapaUnica": ["dataEmissao", "empresa", "filial", "serie", "contrato", "remessa", "situacao",
+                "situacaoDocEletronico", "cliente", "notaVenda", "serieLegalVenda", "safra", "observacaoNotaVenda"],
         });
 
         this.#validador.definirCamposOcultos({
-            "etapa1": [],
+            "etapaUnica": [],
         });
-
-        this.#secaoRemessa = null;
     }
 
     // gerar(): void
@@ -42,9 +38,13 @@ class Formulario {
         Define os campos do formulário, agrupados por seção, e suas propriedades.
      */
     gerar() {
+        const camposControle = [
+            new CampoTexto("filiaisUsuario", "Abrangência de filiais do usuário (ERP, empresa 1)", 12, null, null, null,
+                null, null, 5),
+        ];
         const camposRemessa = [
             new CampoFactory("dataEmissao", (id) => {
-                return new CampoData(id, "Data de emissão", 2);
+                return new CampoData(id, "Data de emissão da remessa", 2);
             }),
             new CampoFactory("empresa", (id) => {
                 return new CampoTexto(id, "Empresa", 2);
@@ -85,14 +85,15 @@ class Formulario {
             new CampoFactory("numeroNotaRecebida", (id) => {
                 return new CampoTexto(id, "Nota recebida", 2);
             }),new CampoFactory("dataEmissaoNotaRecebida", (id) => {
-                return new CampoTexto(id, "Data de emissão da nota recebida", 2);
+                return new CampoData(id, "Data de emissão", 2);
             }),
         ];
 
-        this.#secaoRemessa = new ListaObjetos(
-            "remessa", "Remessas", this.#colecao, camposRemessa, this.#validador
-        );
+        this.#secaoControle = new Secao("controle", "Controle", camposControle, this.#colecao);
+        this.#secaoRemessa = new ListaObjetos("remessa", "Remessas", this.#colecao, camposRemessa, this.#validador);
 
+
+        this.#secaoControle.gerar();
         this.#secaoRemessa.gerar();
     }
 

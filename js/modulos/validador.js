@@ -267,8 +267,8 @@ class Validador {
             for (const idCampo of this.#camposBloqueados[etapa]) {
                 const campo = this.#obterCampo(colecao, idCampo, linha);
 
-                campo.definirEdicao(true);
-                campo.sobrescreverEditabilidade(true);
+                campo.definirEdicao(false);
+                campo.sobrescreverEdicao(true);
             }
         }
 

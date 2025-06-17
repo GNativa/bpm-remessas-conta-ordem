@@ -31,7 +31,7 @@ class Campo {
 
         this.obrigatoriedadeSobrescrita = false; // Indica se a obrigatoriedade do campo só pode ser definida pela etapa
         this.visibilidadeSobrescrita = false;    // Indica se a visibilidade do campo só pode ser definida pela etapa
-        this.edicaoSobrescrita = false;   // Indica se do campo só pode ser editado pela etapa
+        this.edicaoSobrescrita = false;          // Indica se do campo só pode ser editado pela etapa
 
         this.consistenciaAtiva = null;           // Consistência ativa no campo
         this.feedback = null;                    // Elemento div que exibe uma mensagem abaixo do campo nos casos de validações.
