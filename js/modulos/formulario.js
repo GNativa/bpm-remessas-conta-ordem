@@ -86,7 +86,7 @@ class Formulario {
                 return new CampoTexto(id, "Nota recebida", 2);
             }),
             new CampoFactory("dataEmissaoNotaRecebida", (id) => {
-                return new CampoData(id, "Data de emissão", 2);
+                return new CampoData(id, "Emissão da nota recebida", 2);
             }),
         ];
 
@@ -99,7 +99,22 @@ class Formulario {
     }
 
     obterValidacoes() {
-        return [];
+        return [
+            new Validacao(() => {
+                const campoRemessa = this.#colecao.obter("remessa");
+                return campoRemessa.length === 1
+                    && campoRemessa[0].val() === "";
+            },
+            "Não há nenhuma remessa disponível no momento.",
+            () => this.#colecao.obter("remessa"),
+            () => this.#colecao.obter("remessa"),
+            null,
+            null,
+            null,
+            null,
+            null,
+            true)
+        ];
     }
 
     // #salvarDados(): Promise<{}>

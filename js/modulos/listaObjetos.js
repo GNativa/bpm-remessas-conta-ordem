@@ -80,7 +80,7 @@ class ListaObjetos extends Secao {
 
         if (this.obterIndiceUltimaLinha() > 0) {
             this.#validador.configurarValidacoesFixas(Utilitario.obterEtapa(), this.#colecao, this.obterIndiceUltimaLinha());
-            this.#validador.configurarValidacoes();
+            this.#validador.configurarValidacoes(true);
         }
     }
 
@@ -93,8 +93,9 @@ class ListaObjetos extends Secao {
         const lista = this.#camposLista.get(indice);
         this.#colecao.removerCampos(lista);
         this.#validador.removerCamposValidados(lista);
-
         this.#camposLista.delete(indice);
+
+        this.#validador.configurarValidacoes(false);
     }
 
     obterIndiceUltimaLinha() {

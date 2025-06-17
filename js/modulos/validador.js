@@ -4,7 +4,7 @@ class Validacao {
     constructor(ativa = () => false, feedback, camposMonitorados,
                 camposConsistidos, camposObrigatorios, camposOcultos,
                 camposDesabilitados, camposExibidos, camposHabilitados,
-                sobrescreverObrigatoriedade = false, sobrescreverEditabilidade = false) {
+               afetaVariasLinhas = false) {
         this.id = Validacao.#proximoId;
         Validacao.#proximoId++;
         this.ativa = ativa;
@@ -16,8 +16,7 @@ class Validacao {
         this.camposDesabilitados = Utilitario.criarGetterDeArray(camposDesabilitados);
         this.camposExibidos = Utilitario.criarGetterDeArray(camposExibidos);
         this.camposHabilitados = Utilitario.criarGetterDeArray(camposHabilitados);
-        this.sobrescreverObrigatoriedade = sobrescreverObrigatoriedade ?? false;
-        this.sobrescreverEditabilidade = sobrescreverEditabilidade ?? false;
+        this.afetaVariasLinhas = afetaVariasLinhas ?? false;
     }
 }
 
@@ -88,15 +87,24 @@ class Validador {
         campos = [new Campo()],
         configurar = (campo = new Campo()) => {}
     ) {
-        if (this.filtrarCamposDaMesmaLinha(campoMonitorado, campos).length === 0) {
+        if (!validacao.afetaVariasLinhas && this.filtrarCamposDaMesmaLinha(campoMonitorado, campos).length === 0) {
             return;
         }
 
         campoMonitorado.adicionarEvento("change", () => {
-            for (const campo of this.filtrarCamposDaMesmaLinha(campoMonitorado, campos)) {
+            let listaCampos;
+
+            if (validacao.afetaVariasLinhas) {
+                listaCampos = campos;
+            }
+            else {
+                listaCampos = this.filtrarCamposDaMesmaLinha(campoMonitorado, campos);
+            }
+
+            for (const campo of listaCampos) {
                 configurar(campo);
-                campo.sobrescreverEditabilidade(validacao.sobrescreverEditabilidade);
-                campo.sobrescreverObrigatoriedade(validacao.sobrescreverObrigatoriedade);
+                // campo.sobrescreverEdicao(validacao.sobrescreverEdicao);
+                // campo.sobrescreverObrigatoriedade(validacao.sobrescreverObrigatoriedade);
             }
         });
     }
@@ -124,17 +132,20 @@ class Validador {
                     return;
                 }
 
-                if (validacao.ativa() && consistido["consistenciaAtiva"] === null) {
+                const ativa = validacao.ativa();
+
+                if (ativa && consistido["consistenciaAtiva"] === null) {
                     consistido.definirConsistenciaAtiva(validacao);
-                } else if (!validacao.ativa()
+                }
+                else if (!ativa
                     && consistido["consistenciaAtiva"] !== null
                     && consistido["consistenciaAtiva"]["id"] === validacao["id"]) {
                     consistido.definirConsistenciaAtiva(null);
                 }
 
-                consistido.definirValidez(!validacao.ativa());
+                consistido.definirValidez(!ativa);
                 consistido.definirFeedback(validacao.feedback ?? "");
-                consistido.mostrarFeedback(validacao.ativa());
+                consistido.mostrarFeedback(ativa);
             }
         );
 
@@ -186,12 +197,12 @@ class Validador {
         campo.notificar();
     }
 
-    configurarValidacoes() {
+    configurarValidacoes(verificarConfigurados) {
         for (const validacao of this.#validacoes) {
             let camposMonitorados = validacao.camposMonitorados();
             camposMonitorados = camposMonitorados.flat();
 
-            if (this.#camposJaConfigurados.length > 0) {
+            if (verificarConfigurados && this.#camposJaConfigurados.length > 0) {
                 camposMonitorados = camposMonitorados.filter((campo) => {
                     return this.#camposJaConfigurados.indexOf(campo) === -1;
                 });

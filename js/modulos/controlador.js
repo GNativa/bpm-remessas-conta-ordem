@@ -324,6 +324,6 @@ class Controlador {
             this.#validador.adicionarValidacao(validacao);
         }
 
-        this.#validador.configurarValidacoes();
+        this.#validador.configurarValidacoes(false);
     }
 }
