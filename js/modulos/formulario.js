@@ -91,8 +91,8 @@ class Formulario {
         ];
 
         this.#secaoControle = new Secao("controle", "Controle", camposControle, this.#colecao);
-        this.#secaoRemessa = new ListaObjetos("remessa", "Remessas", this.#colecao, camposRemessa, this.#validador);
-
+        this.#secaoRemessa = new ListaObjetos("remessa", "Remessas", this.#colecao, camposRemessa,
+            this.#validador, false, false);
 
         this.#secaoControle.gerar();
         this.#secaoRemessa.gerar();
