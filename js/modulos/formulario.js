@@ -5,14 +5,14 @@
 
 class Formulario {
     #fontes = {};
-    #colecao;
+    #campos;
     #validador;
     #secaoControle = null;
     #secaoRemessa = null;
     #personalizacao;
 
     constructor(colecao, validador) {
-        this.#colecao = colecao;
+        this.#campos = colecao;
         this.#validador = validador;
 
         this.#personalizacao = {
@@ -20,12 +20,12 @@ class Formulario {
         };
 
         this.#validador.definirCamposObrigatorios({
-            "etapaUnica": ["numeroNotaRecebida", "dataEmissaoNotaRecebida"],
+            "etapaUnica": [],
         });
 
         this.#validador.definirCamposBloqueados({
             "etapaUnica": ["dataEmissao", "empresa", "filial", "serie", "contrato", "remessa", "situacao",
-                "situacaoDocEletronico", "cliente", "notaVenda", "serieLegalNotaVenda", "safra", "observacaoNotaVenda"],
+                "situacaoDocEletronico", "cliente", "notaVenda", "serieLegalNotaVenda", "safra", "observacao"],
         });
 
         this.#validador.definirCamposOcultos({
@@ -43,8 +43,15 @@ class Formulario {
                 null, null, null, 5),
         ];
         const camposRemessa = [
+            new CampoFactory("selecionar", (id) => {
+                return new CampoCheckbox(id, "Selecionar", 2, "Selecione a nota que deseja"
+                + " alterar.");
+            }),
+            new CampoFactory("remessa", (id) => {
+                return new CampoTexto(id, "Remessa", 2);
+            }),
             new CampoFactory("dataEmissao", (id) => {
-                return new CampoData(id, "Data de emissão da remessa", 2);
+                return new CampoData(id, "Data de emissão", 2);
             }),
             new CampoFactory("empresa", (id) => {
                 return new CampoTexto(id, "Empresa", 2);
@@ -57,9 +64,6 @@ class Formulario {
             }),
             new CampoFactory("contrato", (id) => {
                 return new CampoTexto(id, "Contrato", 2);
-            }),
-            new CampoFactory("remessa", (id) => {
-                return new CampoTexto(id, "Remessa", 2);
             }),
             new CampoFactory("situacao", (id) => {
                 return new CampoTexto(id, "Situação", 4);
@@ -79,20 +83,20 @@ class Formulario {
             new CampoFactory("safra", (id) => {
                 return new CampoTexto(id, "Safra", 2);
             }),
-            new CampoFactory("observacaoNotaVenda", (id) => {
-                return new CampoTexto(id, "Observação da nota de venda", 8, null, null, null, null, null, null, 5);
+            new CampoFactory("observacao", (id) => {
+                return new CampoTexto(id, "Observação da remessa", 8, null, null, null, null, null, null, 5);
             }),
             new CampoFactory("numeroNotaRecebida", (id) => {
                 return new CampoTexto(id, "Nota recebida", 2);
             }),
-            new CampoFactory("dataEmissaoNotaRecebida", (id) => {
+            new CampoFactory("emissaoNotaRecebida", (id) => {
                 return new CampoData(id, "Emissão da nota recebida", 2);
             }),
         ];
 
-        this.#secaoControle = new Secao("controle", "Controle", camposControle, this.#colecao);
-        this.#secaoRemessa = new ListaObjetos("remessa", "Remessas", this.#colecao, camposRemessa,
-            this.#validador, false, false);
+        this.#secaoControle = new Secao("controle", "Controle", camposControle, this.#campos);
+        this.#secaoRemessa = new ListaObjetos("remessa", "Remessas", this.#campos, camposRemessa,
+            this.#validador, true, true);
 
         this.#secaoControle.gerar();
         this.#secaoRemessa.gerar();
@@ -101,19 +105,50 @@ class Formulario {
     obterValidacoes() {
         return [
             new Validacao(() => {
-                const campoRemessa = this.#colecao.obter("remessa");
-                return campoRemessa.length === 1
-                    && campoRemessa[0].val() === "";
-            },
-            "Não há nenhuma remessa disponível no momento.",
-            () => this.#colecao.obter("remessa"),
-            () => this.#colecao.obter("remessa"),
-            null,
-            null,
-            null,
-            null,
-            null,
-            true)
+                    const campoRemessa = this.#campos.obter("remessa");
+                    return campoRemessa.length === 1
+                        && campoRemessa[0].val() === "";
+                },
+                "Não há nenhuma remessa disponível no momento.",
+                () => this.#campos.obter("remessa"),
+                () => this.#campos.obter("remessa"),
+                null,
+                null,
+                null,
+                null,
+                null,
+                true),
+            new Validacao(() => {
+                    const campos = this.#campos.obter("selecionar");
+
+                    const selecionouAoMenosUm = campos.some((selecionado) => {
+                        return selecionado.campo.prop("checked") === true;
+                    });
+
+                    return !selecionouAoMenosUm;
+                },
+                "Selecione ao menos uma nota para alterar sua observação.",
+                () => this.#campos.obter("selecionar"),
+                () => this.#campos.obter("selecionar"),
+                null,
+                null,
+                null,
+                null,
+                null,
+                true),
+            new Validacao((campo) => {
+                    console.log(campo);
+                    return campo.campo.prop("checked");
+                },
+                null,
+                () => this.#campos.obter("selecionar"),
+                null,
+                () => {
+                    const colecao = this.#campos.obterVarios(
+                        ["numeroNotaRecebida", "emissaoNotaRecebida"]
+                    );
+                    return colecao;
+                })
         ];
     }
 
@@ -139,41 +174,44 @@ class Formulario {
 
             const indice = this.#secaoRemessa.obterIndiceUltimaLinha();
 
-            const dataEmissao = this.#colecao.obterCampoPorLinha("dataEmissao", indice);
+            const dataEmissao = this.#campos.obterPorLinha("dataEmissao", indice);
             dataEmissao.val(remessas[i]["remessas_data_emissao"].slice(0,10));
 
-            const empresa = this.#colecao.obterCampoPorLinha("empresa", indice);
+            const empresa = this.#campos.obterPorLinha("empresa", indice);
             empresa.val(Number(remessas[i]["remessas_empresa"]));
 
-            const filial = this.#colecao.obterCampoPorLinha("filial", indice);
+            const filial = this.#campos.obterPorLinha("filial", indice);
             filial.val(Number(remessas[i]["remessas_filial"]));
 
-            const serie = this.#colecao.obterCampoPorLinha("serie", indice);
+            const serie = this.#campos.obterPorLinha("serie", indice);
             serie.val(remessas[i]["remessas_serie"]);
 
-            const contrato = this.#colecao.obterCampoPorLinha("contrato", indice);
+            const contrato = this.#campos.obterPorLinha("contrato", indice);
             contrato.val(remessas[i]["remessas_contrato"]);
 
-            const remessa = this.#colecao.obterCampoPorLinha("remessa", indice);
+            const remessa = this.#campos.obterPorLinha("remessa", indice);
             remessa.val(Number(remessas[i]["remessas_numero"]));
 
-            const situacao = this.#colecao.obterCampoPorLinha("situacao", indice);
+            const situacao = this.#campos.obterPorLinha("situacao", indice);
             situacao.val(remessas[i]["remessas_situacao"]);
 
-            const situacaoDocEletronico = this.#colecao.obterCampoPorLinha("situacaoDocEletronico", indice);
+            const situacaoDocEletronico = this.#campos.obterPorLinha("situacaoDocEletronico", indice);
             situacaoDocEletronico.val(remessas[i]["remessas_situacao_documento_eletronico"]);
 
-            const cliente = this.#colecao.obterCampoPorLinha("cliente", indice);
+            const cliente = this.#campos.obterPorLinha("cliente", indice);
             cliente.val(Number(remessas[i]["remessas_cliente"]));
 
-            const notaVenda = this.#colecao.obterCampoPorLinha("notaVenda", indice);
+            const notaVenda = this.#campos.obterPorLinha("notaVenda", indice);
             notaVenda.val(Number(remessas[i]["remessas_nota_venda"]));
 
-            const serieLegalNotaVenda = this.#colecao.obterCampoPorLinha("serieLegalNotaVenda", indice);
+            const serieLegalNotaVenda = this.#campos.obterPorLinha("serieLegalNotaVenda", indice);
             serieLegalNotaVenda.val(Number(remessas[i]["remessas_serie_legal_nota_venda"]));
 
-            const observacaoNotaVenda = this.#colecao.obterCampoPorLinha("observacaoNotaVenda", indice);
-            observacaoNotaVenda.val(remessas[i]["remessas_observacao_nota_venda"]);
+            const observacao = this.#campos.obterPorLinha("observacao", indice);
+            observacao.val(remessas[i]["remessas_observacao"]);
+
+            const safra = this.#campos.obterPorLinha("safra", indice);
+            safra.val(remessas[i]["remessas_safra"]);
         }
     }
 
@@ -202,6 +240,10 @@ class Formulario {
         // A implementar.
     }
 
+    // TODO: criar classe mãe para não precisar expor
+    //  métodos fixos ao criador do formulário,
+    //   como obterFontes, obterPersonalizacao e possivelmente outros
+    //    que poderiam ser sobrescritos
     obterFontes() {
         return Object.freeze(this.#fontes);
     }
