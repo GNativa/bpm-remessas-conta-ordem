@@ -24,8 +24,10 @@ class Formulario {
         });
 
         this.#validador.definirCamposBloqueados({
-            "etapaUnica": ["dataEmissao", "empresa", "filial", "serie", "contrato", "remessa", "situacao",
-                "situacaoDocEletronico", "cliente", "notaVenda", "serieLegalNotaVenda", "safra", "observacao"],
+            "etapaUnica": [
+                "dataEmissao", "empresa", "filial", "serie", "contrato", "remessa", "situacao",
+                "situacaoDocEletronico", "cliente", "notaVenda", "serieLegalNotaVenda", "safra", "placa", "observacao"
+            ],
         });
 
         this.#validador.definirCamposOcultos({
@@ -82,6 +84,9 @@ class Formulario {
             }),
             new CampoFactory("safra", (id) => {
                 return new CampoTexto(id, "Safra", 2);
+            }),
+            new CampoFactory("placa", (id) => {
+                return new CampoTexto(id, "Placa", 2);
             }),
             new CampoFactory("observacao", (id) => {
                 return new CampoTexto(id, "Observação da remessa", 8, null, null, null, null, null, null, 5);
@@ -165,6 +170,11 @@ class Formulario {
     }
 
     carregarDadosFluxo(mapa) {
+        const filiais = mapa.get("abrangenciaFiliais");
+
+        const campoAbrangenciaFiliais = this.#campos.obterCampo("filiaisUsuario");
+        campoAbrangenciaFiliais.val(filiais);
+
         const remessas = mapa.get("remessas");
 
         for (let i = 0; i < remessas.length; i++) {
@@ -212,6 +222,9 @@ class Formulario {
 
             const safra = this.#campos.obterPorLinha("safra", indice);
             safra.val(remessas[i]["remessas_safra"]);
+
+            const placa = this.#campos.obterPorLinha("placa", indice);
+            placa.val(remessas[i]["remessas_placa"]);
         }
     }
 
