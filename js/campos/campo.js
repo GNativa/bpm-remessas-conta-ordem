@@ -3,6 +3,8 @@
     - Representação abstrata de um campo no formulário.
  */
 class Campo {
+    #validacoes = [];
+
     constructor(id, rotulo, largura, dica, tag, tipo, fonte, campoFonte) {
         this.id = id;                            // Atributo "id" do elemento HTML
         this.idAgrupado = id;                  // ID agrupado do campo para identificação em listas de objeto
@@ -113,6 +115,14 @@ class Campo {
                 elemento.attr("title", `${rotulo}: ${elemento.val()}`);
             }
         });
+    }
+
+    adicionarValidacao(validacao) {
+        this.#validacoes.push(validacao);
+    }
+
+    obterValidacoes() {
+        return this.#validacoes;
     }
 
     configurarCampo() {
