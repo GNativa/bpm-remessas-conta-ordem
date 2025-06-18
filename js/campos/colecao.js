@@ -5,7 +5,7 @@ class ColecaoCampos {
         this.#campos = new Map();
     }
 
-    obterCampoPorLinha(idAgrupado, linha) {
+    obterPorLinha(idAgrupado, linha) {
         const campos = this.#campos;
         const lista = campos.get(idAgrupado);
 
@@ -101,6 +101,24 @@ class ColecaoCampos {
 
         return lista;
     }
+
+    obterVarios(idsAgrupados = [""]) {
+        const campos = this.#campos;
+        const lista = [];
+
+        for (const id of idsAgrupados) {
+            const camposAgrupados = campos.get(id);
+
+            if (!camposAgrupados) {
+                throw new Error(`Não há uma lista de campos com o ID agrupado "${id}"`);
+            }
+
+            lista.push(campos.get(id));
+        }
+
+        return lista.flat();
+    }
+
 
     /*
     estaVazia() {
