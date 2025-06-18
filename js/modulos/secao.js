@@ -35,6 +35,7 @@ class Secao {
     adicionarLinha() {
         this.criarLinha();
         this.salvarCampos();
+        Utilitario.configurarTooltips();
     }
 
     criarLinha() {
@@ -75,6 +76,7 @@ class Secao {
         this.adicionarLinha();
         const elemento = $(secao);
         $("#containerFormulario").append(elemento);
+        Utilitario.configurarTooltips();
 
         this.elemento = elemento;
         this.gerada = true;
