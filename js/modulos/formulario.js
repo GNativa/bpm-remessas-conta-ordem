@@ -170,7 +170,7 @@ class Formulario {
     }
 
     carregarDadosFluxo(mapa) {
-        const filiais = mapa.get("abrangenciaFiliais");
+        const filiais = mapa.get("abrangencia_filiais");
 
         const campoAbrangenciaFiliais = this.#campos.obterCampo("filiaisUsuario");
         campoAbrangenciaFiliais.val(filiais);
