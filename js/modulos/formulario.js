@@ -90,7 +90,8 @@ class Formulario {
                 return new CampoTexto(id, "Nota recebida", 2);
             }),
             new CampoFactory("emissaoNotaRecebida", (id) => {
-                return new CampoData(id, "Emissão da nota recebida", 2);
+                return new CampoData(id, "Emissão da nota recebida", 2,
+                    null, null, null, true);
             }),
         ];
 
@@ -137,7 +138,6 @@ class Formulario {
                 null,
                 true),
             new Validacao((campo) => {
-                    console.log(campo);
                     return campo.campo.prop("checked");
                 },
                 null,
