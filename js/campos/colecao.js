@@ -1,8 +1,7 @@
 class ColecaoCampos {
-    #campos;
+    #campos = new Map();
 
     constructor() {
-        this.#campos = new Map();
     }
 
     obterPorLinha(idAgrupado, linha) {
