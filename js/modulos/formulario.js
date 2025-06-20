@@ -34,7 +34,7 @@ class Formulario {
 
         this.#validador.definirCamposOcultos({
             "etapaUnica": [
-                //"filiaisUsuario", "ieClienteNotaVenda", "enderecoClienteNotaVenda", "documentoClienteNotaVenda",
+                "filiaisUsuario", "ieClienteNotaVenda", "enderecoClienteNotaVenda", "documentoClienteNotaVenda",
             ],
         });
     }
@@ -164,7 +164,7 @@ class Formulario {
 
                     return !selecionouAoMenosUm;
                 },
-                "Selecione ao menos uma nota para alterar sua observação.",
+                "Selecione ao menos uma nota.",
                 () => this.#campos.obter("selecionar"),
                 () => this.#campos.obter("selecionar"),
                 null,
