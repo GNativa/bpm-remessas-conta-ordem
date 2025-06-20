@@ -259,7 +259,7 @@ class Formulario {
             cliente.val(Number(remessas[i]["remessas_cliente"]));
 
             const nomeCliente = this.#campos.obterPorLinha("nomeCliente", indice);
-            nomeCliente.val(Number(remessas[i]["remessas_nome_cliente"]));
+            nomeCliente.val(remessas[i]["remessas_nome_cliente"]);
 
             const notaVenda = this.#campos.obterPorLinha("notaVenda", indice);
             notaVenda.val(Number(remessas[i]["remessas_nota_venda"]));
