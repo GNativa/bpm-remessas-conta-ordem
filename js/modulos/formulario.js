@@ -283,7 +283,7 @@ class Formulario {
             documentoClienteNotaVenda.val(remessas[i]["remessas_documento_cliente_nota_venda"]);
 
             const dataEmissaoNotaVenda = this.#campos.obterPorLinha("dataEmissaoNotaVenda", indice);
-            dataEmissaoNotaVenda.val(remessas[i]["remessas_data_emissao_nota_venda"]);
+            dataEmissaoNotaVenda.val(remessas[i]["remessas_data_emissao_nota_venda"].slice(0, 10));
 
             const observacao = this.#campos.obterPorLinha("observacao", indice);
             observacao.val(remessas[i]["remessas_observacao"]);
