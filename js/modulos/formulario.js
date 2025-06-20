@@ -16,7 +16,35 @@ class Formulario {
         this.#campos = colecao;
         this.#validador = validador;
 
-        this.#conversores = [];
+        this.#conversores = [
+            new Conversor("selecionar","remessas_selecionada", "texto"),
+            new Conversor("dataEmissao","remessas_data_emissao", "data"),
+            new Conversor("empresa","remessas_empresa", "inteiro"),
+            new Conversor("filial","remessas_filial", "inteiro"),
+            new Conversor("serie","remessas_serie", "texto"),
+            new Conversor("contrato","remessas_contrato", "texto"),
+            new Conversor("remessa","remessas_numero", "inteiro"),
+            new Conversor("nomeCliente","remessas_nome_cliente", "inteiro"),
+            new Conversor("notaVenda","remessas_nota_venda", "inteiro"),
+            new Conversor("serieLegalNotaVenda","remessas_serie_legal_nota_venda", "texto"),
+            new Conversor("nomeClienteNotaVenda","remessas_nome_cliente_nota_venda", "texto"),
+            new Conversor("ieClienteNotaVenda","remessas_ie_cliente_nota_venda", "texto"),
+            new Conversor(
+                "enderecoClienteNotaVenda",
+                "remessas_endereco_cliente_nota_venda",
+                "texto"
+            ),
+            new Conversor(
+                "documentoClienteNotaVenda",
+                "remessas_documento_cliente_nota_venda",
+                "texto"
+            ),
+            new Conversor("dataEmissaoNotaVenda","remessas_data_emissao_nota_venda", "texto"),
+            new Conversor("safra","remessas_safra", "texto"),
+            new Conversor("placa","remessas_placa", "texto"),
+            new Conversor("motorista","remessas_motorista", "texto"),
+
+        ];
 
         this.#personalizacao = {
             titulo: "Remessas de venda por conta e ordem",
@@ -48,8 +76,15 @@ class Formulario {
         for (let i = 0; i < listaDeObjetos.camposLista.length; i++) {
             const objeto = {};
 
-            for (const conversor of this.#conversores) {
-                objeto[conversor.propriedade] = this.#campos.obterPorLinha(conversor.idCampo, i);
+            if (this.#conversores.length === 0) {
+                for (const campo of listaDeObjetos.camposLista[i]) {
+                    objeto[campo.id] = campo.val();
+                }
+            }
+            else {
+                for (const conversor of this.#conversores) {
+                    objeto[conversor.propriedade] = this.#campos.obterPorLinha(conversor.idCampo, i).val();
+                }
             }
 
             array.push(objeto);
