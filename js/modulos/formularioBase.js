@@ -22,6 +22,22 @@ class FormularioBase {
 
     }
 
+    carregarListaDeObjetos(array, listaDeObjetos, conversores = [new Conversor()]) {
+        for (let i = 0; i < array.length; i++) {
+            if (i > 0) {
+                listaDeObjetos.adicionarLinha();
+            }
+
+            const indice = listaDeObjetos.obterIndiceUltimaLinha();
+
+            for (const conversor of conversores) {
+                const campo = this.#campos.obterPorLinha(conversor.idCampo, indice);
+                const valor = conversor.obterValor(array[i]);
+                campo.val(valor);
+            }
+        }
+    }
+
     gerar() {
         for (const secao of this.#secoes.values()) {
             secao.gerar();
