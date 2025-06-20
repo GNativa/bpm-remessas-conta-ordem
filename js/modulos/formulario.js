@@ -26,12 +26,16 @@ class Formulario {
         this.#validador.definirCamposBloqueados({
             "etapaUnica": [
                 "dataEmissao", "empresa", "filial", "serie", "contrato", "remessa", "situacao",
-                "situacaoDocEletronico", "cliente", "notaVenda", "serieLegalNotaVenda", "safra", "placa", "observacao"
+                "situacaoDocEletronico", "cliente", "nomeCliente", "notaVenda", "serieLegalNotaVenda",
+                "clienteNotaVenda", "nomeClienteNotaVenda", "dataEmissaoNotaVenda", "safra", "placa", "motorista",
+                "observacao",
             ],
         });
 
         this.#validador.definirCamposOcultos({
-            "etapaUnica": [],
+            "etapaUnica": [
+                "filiaisUsuario", "ieClienteNotaVenda", "enderecoClienteNotaVenda", "documentoClienteNotaVenda",
+            ],
         });
     }
 
@@ -46,8 +50,8 @@ class Formulario {
         ];
         const camposRemessa = [
             new CampoFactory("selecionar", (id) => {
-                return new CampoCheckbox(id, "Selecionar", 2, "Selecione a nota que deseja"
-                + " alterar.");
+                return new CampoCheckbox(id, "Selecionar", 2, "Marque aqui para indicar que"
+                + " a observação da remessa deverá ser alterada.");
             }),
             new CampoFactory("remessa", (id) => {
                 return new CampoTexto(id, "Remessa", 2);
@@ -68,13 +72,16 @@ class Formulario {
                 return new CampoTexto(id, "Contrato", 2);
             }),
             new CampoFactory("situacao", (id) => {
-                return new CampoTexto(id, "Situação", 4);
+                return new CampoTexto(id, "Situação", 2);
             }),
             new CampoFactory("situacaoDocEletronico", (id) => {
-                return new CampoTexto(id, "Situação do documento eletrônico", 4);
+                return new CampoTexto(id, "Situação (documento eletrônico)", 2);
             }),
             new CampoFactory("cliente", (id) => {
                 return new CampoTexto(id, "Cliente", 2);
+            }),
+            new CampoFactory("nomeCliente", (id) => {
+                return new CampoTexto(id, "Nome do cliente", 2);
             }),
             new CampoFactory("notaVenda", (id) => {
                 return new CampoTexto(id, "Nota de venda", 2);
@@ -82,14 +89,35 @@ class Formulario {
             new CampoFactory("serieLegalNotaVenda", (id) => {
                 return new CampoTexto(id, "Série legal da nota de venda", 2);
             }),
+            new CampoFactory("clienteNotaVenda", (id) => {
+                return new CampoTexto(id, "Cliente da nota de venda", 2);
+            }),
+            new CampoFactory("nomeClienteNotaVenda", (id) => {
+                return new CampoTexto(id, "Nome do cliente da nota de venda", 2);
+            }),
+            new CampoFactory("ieClienteNotaVenda", (id) => {
+                return new CampoTexto(id, "I.E. do cliente da nota de venda", 2);
+            }),
+            new CampoFactory("enderecoClienteNotaVenda", (id) => {
+                return new CampoTexto(id, "Endereço do cliente da nota de venda", 6);
+            }),
+            new CampoFactory("documentoClienteNotaVenda", (id) => {
+                return new CampoTexto(id, "Documento do cliente da nota de venda", 2);
+            }),
+            new CampoFactory("dataEmissaoNotaVenda", (id) => {
+                return new CampoData(id, "Emissão da nota de venda", 2);
+            }),
             new CampoFactory("safra", (id) => {
                 return new CampoTexto(id, "Safra", 2);
             }),
             new CampoFactory("placa", (id) => {
                 return new CampoTexto(id, "Placa", 2);
             }),
+            new CampoFactory("motorista", (id) => {
+                return new CampoTexto(id, "Motorista", 2);
+            }),
             new CampoFactory("observacao", (id) => {
-                return new CampoTexto(id, "Observação da remessa", 8, null, null, null, null, null, null, 5);
+                return new CampoTexto(id, "Observação da remessa", 4, null, null, null, null, null, null, 5);
             }),
             new CampoFactory("numeroNotaRecebida", (id) => {
                 return new CampoTexto(id, "Nota recebida", 2);
@@ -110,7 +138,8 @@ class Formulario {
 
     obterValidacoes() {
         return [
-            new Validacao(() => {
+            new Validacao(
+            () => {
                     const campoRemessa = this.#campos.obter("remessa");
                     return campoRemessa.length === 1
                         && campoRemessa[0].val() === "";
@@ -123,8 +152,10 @@ class Formulario {
                 null,
                 null,
                 null,
-                true),
-            new Validacao(() => {
+                true
+            ),
+            new Validacao(
+                () => {
                     const campos = this.#campos.obter("selecionar");
 
                     const selecionouAoMenosUm = campos.some((selecionado) => {
@@ -141,8 +172,10 @@ class Formulario {
                 null,
                 null,
                 null,
-                true),
-            new Validacao((campo) => {
+                true
+            ),
+            new Validacao(
+                (campo) => {
                     return campo.campo.prop("checked");
                 },
                 null,
@@ -153,7 +186,21 @@ class Formulario {
                         ["numeroNotaRecebida", "emissaoNotaRecebida"]
                     );
                     return colecao;
-                })
+                }
+            ),
+            /*
+            new Validacao(
+                (campo) => {
+                    const campoSelecionar = this.#campos.obterPorLinha("selecionar", campo.linhaLista);
+                    const campoObservacao = this.#campos.obterPorLinha("observacao", campo.linhaLista);
+
+                    return campoObservacao.val() !== "" && campoSelecionar.campo.prop("checked");
+                },
+                "A observação desta nota já foi preenchida.",
+                () => this.#campos.obterVarios(["observacao", "selecionar"]),
+                () => this.#campos.obter("observacao"),
+            ),
+             */
         ];
     }
 
@@ -211,11 +258,32 @@ class Formulario {
             const cliente = this.#campos.obterPorLinha("cliente", indice);
             cliente.val(Number(remessas[i]["remessas_cliente"]));
 
+            const nomeCliente = this.#campos.obterPorLinha("nomeCliente", indice);
+            nomeCliente.val(Number(remessas[i]["remessas_nome_cliente"]));
+
             const notaVenda = this.#campos.obterPorLinha("notaVenda", indice);
             notaVenda.val(Number(remessas[i]["remessas_nota_venda"]));
 
             const serieLegalNotaVenda = this.#campos.obterPorLinha("serieLegalNotaVenda", indice);
-            serieLegalNotaVenda.val(Number(remessas[i]["remessas_serie_legal_nota_venda"]));
+            serieLegalNotaVenda.val(remessas[i]["remessas_serie_legal_nota_venda"]);
+
+            const clienteNotaVenda = this.#campos.obterPorLinha("clienteNotaVenda", indice);
+            clienteNotaVenda.val(Number(remessas[i]["remessas_cliente_nota_venda"]));
+
+            const nomeClienteNotaVenda = this.#campos.obterPorLinha("nomeClienteNotaVenda", indice);
+            nomeClienteNotaVenda.val(remessas[i]["remessas_nome_cliente_nota_venda"]);
+
+            const ieClienteNotaVenda = this.#campos.obterPorLinha("ieClienteNotaVenda", indice);
+            ieClienteNotaVenda.val(remessas[i]["remessas_ie_cliente_nota_venda"]);
+
+            const enderecoClienteNotaVenda = this.#campos.obterPorLinha("enderecoClienteNotaVenda", indice);
+            enderecoClienteNotaVenda.val(remessas[i]["remessas_endereco_cliente_nota_venda"]);
+
+            const documentoClienteNotaVenda = this.#campos.obterPorLinha("documentoClienteNotaVenda", indice);
+            documentoClienteNotaVenda.val(remessas[i]["remessas_documento_cliente_nota_venda"]);
+
+            const dataEmissaoNotaVenda = this.#campos.obterPorLinha("dataEmissaoNotaVenda", indice);
+            dataEmissaoNotaVenda.val(remessas[i]["remessas_data_emissao_nota_venda"]);
 
             const observacao = this.#campos.obterPorLinha("observacao", indice);
             observacao.val(remessas[i]["remessas_observacao"]);
@@ -225,6 +293,9 @@ class Formulario {
 
             const placa = this.#campos.obterPorLinha("placa", indice);
             placa.val(remessas[i]["remessas_placa"]);
+
+            const motorista = this.#campos.obterPorLinha("motorista", indice);
+            motorista.val(remessas[i]["remessas_motorista"]);
         }
     }
 
@@ -253,7 +324,7 @@ class Formulario {
         // A implementar.
     }
 
-    // TODO: criar classe mãe para não precisar expor
+    // TODO: utilizar classe mãe (FormularioBase) para não precisar expor
     //  métodos fixos ao criador do formulário,
     //   como obterFontes, obterPersonalizacao e possivelmente outros
     //    que poderiam ser sobrescritos
