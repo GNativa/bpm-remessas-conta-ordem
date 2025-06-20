@@ -6,6 +6,7 @@
 class Formulario {
     #fontes = {};
     #campos;
+    #conversores;
     #validador;
     #secaoControle = null;
     #secaoRemessa = null;
@@ -14,6 +15,8 @@ class Formulario {
     constructor(colecao, validador) {
         this.#campos = colecao;
         this.#validador = validador;
+
+        this.#conversores = [];
 
         this.#personalizacao = {
             titulo: "Remessas de venda por conta e ordem",
@@ -37,6 +40,38 @@ class Formulario {
                 "filiaisUsuario", "ieClienteNotaVenda", "enderecoClienteNotaVenda", "documentoClienteNotaVenda",
             ],
         });
+    }
+
+    carregarArrayPorLista(listaDeObjetos) {
+        const array = [];
+
+        for (let i = 0; i < listaDeObjetos.camposLista.length; i++) {
+            const objeto = {};
+
+            for (const conversor of this.#conversores) {
+                objeto[conversor.propriedade] = this.#campos.obterPorLinha(conversor.idCampo, i);
+            }
+
+            array.push(objeto);
+        }
+
+        return array;
+    }
+
+    carregarListaDeObjetos(array, listaDeObjetos) {
+        for (let i = 0; i < array.length; i++) {
+            if (i > 0) {
+                listaDeObjetos.adicionarLinha();
+            }
+
+            const indice = listaDeObjetos.obterIndiceUltimaLinha();
+
+            for (const conversor of this.#conversores) {
+                const campo = this.#campos.obterPorLinha(conversor.idCampo, indice);
+                const valor = conversor.obterValor(array[i]);
+                campo.val(valor);
+            }
+        }
     }
 
     // gerar(): void
@@ -210,6 +245,8 @@ class Formulario {
      */
     async salvarDados() {
         let dados = {};
+
+        dados.remessas = this.carregarArrayPorLista(this.#secaoRemessa);
 
         // dados.x = campos["x"].val();
 

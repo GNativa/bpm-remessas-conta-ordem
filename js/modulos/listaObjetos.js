@@ -16,6 +16,10 @@ class ListaObjetos extends Secao {
         this.#permiteRemoverLinhas = permiteRemoverLinhas;
     }
 
+    get camposLista() {
+        return this.#camposLista;
+    }
+
     criarLinha() {
         const indice = this.obterIndiceUltimaLinha() + 1;
 
