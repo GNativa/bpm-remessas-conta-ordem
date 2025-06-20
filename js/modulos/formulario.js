@@ -17,7 +17,7 @@ class Formulario {
         this.#validador = validador;
 
         this.#conversores = [
-            new Conversor("selecionar","remessas_selecionada", "texto"),
+            new Conversor("selecionar","remessas_selecionada", "booleano"),
             new Conversor("dataEmissao","remessas_data_emissao", "data"),
             new Conversor("empresa","remessas_empresa", "inteiro"),
             new Conversor("filial","remessas_filial", "inteiro"),
