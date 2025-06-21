@@ -47,7 +47,7 @@ class Formulario {
                 "remessas_documento_cliente_nota_venda",
                 "texto"
             ),
-            new Conversor("dataEmissaoNotaVenda","remessas_data_emissao_nota_venda", "texto"),
+            new Conversor("dataEmissaoNotaVenda","remessas_data_emissao_nota_venda", "data"),
             new Conversor("observacao","remessas_observacao", "texto"),
             new Conversor("safra","remessas_safra", "texto"),
             new Conversor("placa","remessas_placa", "texto"),
