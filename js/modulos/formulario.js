@@ -182,7 +182,7 @@ class Formulario {
             () => {
                     const campoRemessa = this.#campos.obter("remessa");
                     return campoRemessa.length === 1
-                        && campoRemessa[0].val() === "";
+                        && campoRemessa[0].valor() === "";
                 },
                 "Não há nenhuma remessa disponível no momento.",
                 () => this.#campos.obter("remessa"),
@@ -199,7 +199,7 @@ class Formulario {
                     const campos = this.#campos.obter("selecionar");
 
                     const selecionouAoMenosUm = campos.some((selecionado) => {
-                        return selecionado.val() === true;
+                        return selecionado.valor() === true;
                     });
 
                     return !selecionouAoMenosUm;
@@ -216,7 +216,7 @@ class Formulario {
             ),
             new Validacao(
                 (campo) => {
-                    return campo.campo.prop("checked");
+                    return campo.valor() === true;
                 },
                 null,
                 () => this.#campos.obter("selecionar"),
@@ -234,7 +234,7 @@ class Formulario {
                     const campoSelecionar = this.#campos.obterPorLinha("selecionar", campo.linhaLista);
                     const campoObservacao = this.#campos.obterPorLinha("observacao", campo.linhaLista);
 
-                    return campoObservacao.val() !== "" && campoSelecionar.campo.prop("checked");
+                    return campoObservacao.valor() !== "" && campoSelecionar.campo.prop("checked");
                 },
                 "A observação desta nota já foi preenchida.",
                 () => this.#campos.obterVarios(["observacao", "selecionar"]),
@@ -253,7 +253,7 @@ class Formulario {
 
         dados.remessas = this.carregarArrayPorLista(this.#secaoRemessa);
 
-        // dados.x = campos["x"].val();
+        // dados.x = campos["x"].valor();
 
         return dados;
     }
@@ -262,7 +262,7 @@ class Formulario {
         const filiais = mapa.get("abrangencia_filiais");
 
         const campoAbrangenciaFiliais = this.#campos.obterCampo("filiaisUsuario");
-        campoAbrangenciaFiliais.val(filiais);
+        campoAbrangenciaFiliais.valor(filiais);
 
         const remessas = mapa.get("remessas");
         this.carregarListaDeObjetos(remessas, this.#secaoRemessa);
@@ -276,70 +276,70 @@ class Formulario {
             const indice = this.#secaoRemessa.obterIndiceUltimaLinha();
 
             const dataEmissao = this.#campos.obterPorLinha("dataEmissao", indice);
-            dataEmissao.val(remessas[i]["remessas_data_emissao"].slice(0,10));
+            dataEmissao.valor(remessas[i]["remessas_data_emissao"].slice(0,10));
 
             const empresa = this.#campos.obterPorLinha("empresa", indice);
-            empresa.val(Number(remessas[i]["remessas_empresa"]));
+            empresa.valor(Number(remessas[i]["remessas_empresa"]));
 
             const filial = this.#campos.obterPorLinha("filial", indice);
-            filial.val(Number(remessas[i]["remessas_filial"]));
+            filial.valor(Number(remessas[i]["remessas_filial"]));
 
             const serie = this.#campos.obterPorLinha("serie", indice);
-            serie.val(remessas[i]["remessas_serie"]);
+            serie.valor(remessas[i]["remessas_serie"]);
 
             const contrato = this.#campos.obterPorLinha("contrato", indice);
-            contrato.val(remessas[i]["remessas_contrato"]);
+            contrato.valor(remessas[i]["remessas_contrato"]);
 
             const remessa = this.#campos.obterPorLinha("remessa", indice);
-            remessa.val(Number(remessas[i]["remessas_numero"]));
+            remessa.valor(Number(remessas[i]["remessas_numero"]));
 
             const situacao = this.#campos.obterPorLinha("situacao", indice);
-            situacao.val(remessas[i]["remessas_situacao"]);
+            situacao.valor(remessas[i]["remessas_situacao"]);
 
             const situacaoDocEletronico = this.#campos.obterPorLinha("situacaoDocEletronico", indice);
-            situacaoDocEletronico.val(remessas[i]["remessas_situacao_documento_eletronico"]);
+            situacaoDocEletronico.valor(remessas[i]["remessas_situacao_documento_eletronico"]);
 
             const cliente = this.#campos.obterPorLinha("cliente", indice);
-            cliente.val(Number(remessas[i]["remessas_cliente"]));
+            cliente.valor(Number(remessas[i]["remessas_cliente"]));
 
             const nomeCliente = this.#campos.obterPorLinha("nomeCliente", indice);
-            nomeCliente.val(remessas[i]["remessas_nome_cliente"]);
+            nomeCliente.valor(remessas[i]["remessas_nome_cliente"]);
 
             const notaVenda = this.#campos.obterPorLinha("notaVenda", indice);
-            notaVenda.val(Number(remessas[i]["remessas_nota_venda"]));
+            notaVenda.valor(Number(remessas[i]["remessas_nota_venda"]));
 
             const serieLegalNotaVenda = this.#campos.obterPorLinha("serieLegalNotaVenda", indice);
-            serieLegalNotaVenda.val(remessas[i]["remessas_serie_legal_nota_venda"]);
+            serieLegalNotaVenda.valor(remessas[i]["remessas_serie_legal_nota_venda"]);
 
             const clienteNotaVenda = this.#campos.obterPorLinha("clienteNotaVenda", indice);
-            clienteNotaVenda.val(Number(remessas[i]["remessas_cliente_nota_venda"]));
+            clienteNotaVenda.valor(Number(remessas[i]["remessas_cliente_nota_venda"]));
 
             const nomeClienteNotaVenda = this.#campos.obterPorLinha("nomeClienteNotaVenda", indice);
-            nomeClienteNotaVenda.val(remessas[i]["remessas_nome_cliente_nota_venda"]);
+            nomeClienteNotaVenda.valor(remessas[i]["remessas_nome_cliente_nota_venda"]);
 
             const ieClienteNotaVenda = this.#campos.obterPorLinha("ieClienteNotaVenda", indice);
-            ieClienteNotaVenda.val(remessas[i]["remessas_ie_cliente_nota_venda"]);
+            ieClienteNotaVenda.valor(remessas[i]["remessas_ie_cliente_nota_venda"]);
 
             const enderecoClienteNotaVenda = this.#campos.obterPorLinha("enderecoClienteNotaVenda", indice);
-            enderecoClienteNotaVenda.val(remessas[i]["remessas_endereco_cliente_nota_venda"]);
+            enderecoClienteNotaVenda.valor(remessas[i]["remessas_endereco_cliente_nota_venda"]);
 
             const documentoClienteNotaVenda = this.#campos.obterPorLinha("documentoClienteNotaVenda", indice);
-            documentoClienteNotaVenda.val(remessas[i]["remessas_documento_cliente_nota_venda"]);
+            documentoClienteNotaVenda.valor(remessas[i]["remessas_documento_cliente_nota_venda"]);
 
             const dataEmissaoNotaVenda = this.#campos.obterPorLinha("dataEmissaoNotaVenda", indice);
-            dataEmissaoNotaVenda.val(remessas[i]["remessas_data_emissao_nota_venda"].slice(0, 10));
+            dataEmissaoNotaVenda.valor(remessas[i]["remessas_data_emissao_nota_venda"].slice(0, 10));
 
             const observacao = this.#campos.obterPorLinha("observacao", indice);
-            observacao.val(remessas[i]["remessas_observacao"]);
+            observacao.valor(remessas[i]["remessas_observacao"]);
 
             const safra = this.#campos.obterPorLinha("safra", indice);
-            safra.val(remessas[i]["remessas_safra"]);
+            safra.valor(remessas[i]["remessas_safra"]);
 
             const placa = this.#campos.obterPorLinha("placa", indice);
-            placa.val(remessas[i]["remessas_placa"]);
+            placa.valor(remessas[i]["remessas_placa"]);
 
             const motorista = this.#campos.obterPorLinha("motorista", indice);
-            motorista.val(remessas[i]["remessas_motorista"]);
+            motorista.valor(remessas[i]["remessas_motorista"]);
         }
 
          */
@@ -352,7 +352,7 @@ class Formulario {
      */
     carregarDadosFormulario(mapa) {
 
-        // campos["x"].val(mapa.get("x") || "");
+        // campos["x"].valor(mapa.get("x") || "");
     }
 
     // definirEstadoInicial(): void
@@ -390,7 +390,7 @@ class Formulario {
 
             if (this.#conversores.length === 0) {
                 for (const campo of listaDeObjetos.camposLista[i]) {
-                    objeto[campo.id] = campo.val();
+                    objeto[campo.id] = campo.valor();
                 }
             }
             else {
@@ -399,7 +399,7 @@ class Formulario {
                         continue;
                     }
 
-                    objeto[conversor.propriedade] = this.#campos.obterPorLinha(conversor.idCampo, i).val();
+                    objeto[conversor.propriedade] = this.#campos.obterPorLinha(conversor.idCampo, i).valor();
                 }
             }
 
@@ -424,7 +424,7 @@ class Formulario {
 
                 const campo = this.#campos.obterPorLinha(conversor.idCampo, indice);
                 const valor = conversor.obterValor(array[i]);
-                campo.val(valor);
+                campo.valor(valor);
             }
         }
     }

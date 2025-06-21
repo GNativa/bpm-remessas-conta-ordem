@@ -140,7 +140,7 @@ class CampoTexto extends CampoEntrada {
                 let valor;
 
                 if (this.filtrarValorLimpo) {
-                    valor = this.cleanVal();
+                    valor = this.valorLimpo;
                 }
                 else {
                     valor = this.val();

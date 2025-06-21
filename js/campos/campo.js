@@ -328,6 +328,11 @@ class Campo {
         return this.campo[0];
     }
 
+    valor(valor) {
+        return this.val(valor);
+    }
+
+    // TODO: alterar nome do método para "valor" e remover o método acima
     val(valor) {
         if (typeof valor === "undefined") {
             return this.campo.attr("type") === "checkbox" ? this.campo.prop("checked") : this.campo.val();
@@ -336,18 +341,18 @@ class Campo {
         return (this.campo.attr("type") === "checkbox" ? this.campo.prop("checked", valor) : this.campo.val(valor)).trigger("input").trigger("change");
     }
 
-    prop(propriedade, valor) {
+    propriedade(propriedade, valor) {
         return this.campo.prop(propriedade, valor);
     }
 
-    cleanVal() {
-        const valorLimpo = this.campo.cleanVal();
+    get valorLimpo() {
+        const valor = this.campo.cleanVal();
 
-        if (typeof valorLimpo === "undefined") {
+        if (typeof valor === "undefined") {
             return this.campo.val();
         }
 
-        return valorLimpo;
+        return valor;
     }
 
     on(evento = "", funcao = (e) => {}) {
