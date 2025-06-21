@@ -2,7 +2,7 @@ class ListaObjetos extends Secao {
     #colecao;
     #factories;
     #validador;
-    #camposLista;
+    #camposLista = new Map();
     #permiteAdicionarLinhas;
     #permiteRemoverLinhas;
 
@@ -11,13 +11,16 @@ class ListaObjetos extends Secao {
         this.#factories = factories ?? [];
         this.#validador = validador;
         this.#colecao = colecao;
-        this.#camposLista = new Map();
         this.#permiteAdicionarLinhas = permiteAdicionarLinhas;
         this.#permiteRemoverLinhas = permiteRemoverLinhas;
     }
 
-    get camposLista() {
-        return this.#camposLista;
+    get tamanho() {
+        return this.#camposLista.size;
+    }
+
+    obterLinha(indice) {
+        return this.#camposLista.get(indice);
     }
 
     criarLinha() {

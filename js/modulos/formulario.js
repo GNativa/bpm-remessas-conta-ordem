@@ -401,11 +401,11 @@ class Formulario {
     carregarArrayPorLista(listaDeObjetos) {
         const array = [];
 
-        for (let i = 0; i < listaDeObjetos.camposLista.length; i++) {
+        for (let i = 0; i < listaDeObjetos.tamanho; i++) {
             const objeto = {};
 
             if (this.#conversores.length === 0) {
-                for (const campo of listaDeObjetos.camposLista[i]) {
+                for (const campo of listaDeObjetos.obterLinha(i)) {
                     objeto[campo.id] = campo.valor();
                 }
             }
