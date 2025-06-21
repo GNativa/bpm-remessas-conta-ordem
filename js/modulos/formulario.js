@@ -230,7 +230,7 @@ class Formulario {
             ),
             new Validacao(
                 (campo) => {
-                    return campo.valor() !== "" && !RegExp("^[1-9]([0-9]*)$").test(campo.valor());
+                    return campo.valor() !== "" && !/^[1-9]([0-9]*)$/.test(campo.valor());
                 },
                 "Insira um número válido.",
                 () => this.#campos.obter("numeroNotaRecebida"),
