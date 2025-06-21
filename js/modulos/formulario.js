@@ -267,7 +267,7 @@ class Formulario {
         const sucesso = mapa.get("sucesso");
 
         if (sucesso === false) {
-            const mensagem = mapa.get("mensagem");
+            const mensagem = mapa.get("mensagem_retorno");
             Mensagem.exibir("Erro ao carregar as remessas", `${mensagem}`, "erro");
             return;
         }
