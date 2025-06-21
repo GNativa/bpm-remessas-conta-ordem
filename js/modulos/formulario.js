@@ -6,7 +6,7 @@
 class Formulario {
     #fontes = {};
     #campos;
-    #conversores;
+    #conversores = [];
     #validador;
     #secaoControle = null;
     #secaoRemessa = null;
@@ -17,16 +17,24 @@ class Formulario {
         this.#validador = validador;
 
         this.#conversores = [
-            new Conversor("selecionar","remessas_selecionada", "booleano"),
+            new Conversor("selecionar","remessas_selecionada", "booleano", false),
             new Conversor("dataEmissao","remessas_data_emissao", "data"),
             new Conversor("empresa","remessas_empresa", "inteiro"),
             new Conversor("filial","remessas_filial", "inteiro"),
             new Conversor("serie","remessas_serie", "texto"),
             new Conversor("contrato","remessas_contrato", "texto"),
+            new Conversor("situacao","remessas_situacao", "texto"),
+            new Conversor(
+                "situacaoDocEletronico",
+                "remessas_situacao_documento_eletronico",
+                "texto"
+            ),
             new Conversor("remessa","remessas_numero", "inteiro"),
-            new Conversor("nomeCliente","remessas_nome_cliente", "inteiro"),
+            new Conversor("cliente","remessas_cliente", "inteiro"),
+            new Conversor("nomeCliente","remessas_nome_cliente", "texto"),
             new Conversor("notaVenda","remessas_nota_venda", "inteiro"),
             new Conversor("serieLegalNotaVenda","remessas_serie_legal_nota_venda", "texto"),
+            new Conversor("clienteNotaVenda","remessas_cliente_nota_venda", "inteiro"),
             new Conversor("nomeClienteNotaVenda","remessas_nome_cliente_nota_venda", "texto"),
             new Conversor("ieClienteNotaVenda","remessas_ie_cliente_nota_venda", "texto"),
             new Conversor(
@@ -40,10 +48,10 @@ class Formulario {
                 "texto"
             ),
             new Conversor("dataEmissaoNotaVenda","remessas_data_emissao_nota_venda", "texto"),
+            new Conversor("observacao","remessas_observacao", "texto"),
             new Conversor("safra","remessas_safra", "texto"),
             new Conversor("placa","remessas_placa", "texto"),
             new Conversor("motorista","remessas_motorista", "texto"),
-
         ];
 
         this.#personalizacao = {
@@ -68,45 +76,6 @@ class Formulario {
                 "filiaisUsuario", "ieClienteNotaVenda", "enderecoClienteNotaVenda", "documentoClienteNotaVenda",
             ],
         });
-    }
-
-    carregarArrayPorLista(listaDeObjetos) {
-        const array = [];
-
-        for (let i = 0; i < listaDeObjetos.camposLista.length; i++) {
-            const objeto = {};
-
-            if (this.#conversores.length === 0) {
-                for (const campo of listaDeObjetos.camposLista[i]) {
-                    objeto[campo.id] = campo.val();
-                }
-            }
-            else {
-                for (const conversor of this.#conversores) {
-                    objeto[conversor.propriedade] = this.#campos.obterPorLinha(conversor.idCampo, i).val();
-                }
-            }
-
-            array.push(objeto);
-        }
-
-        return array;
-    }
-
-    carregarListaDeObjetos(array, listaDeObjetos) {
-        for (let i = 0; i < array.length; i++) {
-            if (i > 0) {
-                listaDeObjetos.adicionarLinha();
-            }
-
-            const indice = listaDeObjetos.obterIndiceUltimaLinha();
-
-            for (const conversor of this.#conversores) {
-                const campo = this.#campos.obterPorLinha(conversor.idCampo, indice);
-                const valor = conversor.obterValor(array[i]);
-                campo.val(valor);
-            }
-        }
     }
 
     // gerar(): void
@@ -295,7 +264,9 @@ class Formulario {
         campoAbrangenciaFiliais.val(filiais);
 
         const remessas = mapa.get("remessas");
+        this.carregarListaDeObjetos(remessas, this.#secaoRemessa);
 
+        /*
         for (let i = 0; i < remessas.length; i++) {
             if (i > 0) {
                 this.#secaoRemessa.adicionarLinha();
@@ -369,6 +340,8 @@ class Formulario {
             const motorista = this.#campos.obterPorLinha("motorista", indice);
             motorista.val(remessas[i]["remessas_motorista"]);
         }
+
+         */
     }
 
     // carregarDadosFormulario(mapa: Map): void
@@ -406,5 +379,52 @@ class Formulario {
 
     obterPersonalizacao() {
         return Object.freeze(this.#personalizacao);
+    }
+
+    carregarArrayPorLista(listaDeObjetos) {
+        const array = [];
+
+        for (let i = 0; i < listaDeObjetos.camposLista.length; i++) {
+            const objeto = {};
+
+            if (this.#conversores.length === 0) {
+                for (const campo of listaDeObjetos.camposLista[i]) {
+                    objeto[campo.id] = campo.val();
+                }
+            }
+            else {
+                for (const conversor of this.#conversores) {
+                    if (!conversor.salvar) {
+                        continue;
+                    }
+
+                    objeto[conversor.propriedade] = this.#campos.obterPorLinha(conversor.idCampo, i).val();
+                }
+            }
+
+            array.push(objeto);
+        }
+
+        return array;
+    }
+
+    carregarListaDeObjetos(array, listaDeObjetos) {
+        for (let i = 0; i < array.length; i++) {
+            if (i > 0) {
+                listaDeObjetos.adicionarLinha();
+            }
+
+            const indice = listaDeObjetos.obterIndiceUltimaLinha();
+
+            for (const conversor of this.#conversores) {
+                if (!conversor.carregar) {
+                    continue;
+                }
+
+                const campo = this.#campos.obterPorLinha(conversor.idCampo, indice);
+                const valor = conversor.obterValor(array[i]);
+                campo.val(valor);
+            }
+        }
     }
 }

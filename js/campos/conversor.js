@@ -10,8 +10,11 @@ class Conversor {
     #idCampo;
     #propriedade;
     #tipo;
+    #carregar;
+    #salvar;
 
-    constructor(idCampo = "", propriedade = "", tipo = "") {
+    constructor(idCampo = "", propriedade = "", tipo = "",
+                carregar = true, salvar = true) {
         this.#idCampo = idCampo;
         this.#propriedade = propriedade;
         this.#tipo = tipo;
@@ -19,6 +22,17 @@ class Conversor {
         if (!Conversor.#conversores.has(tipo)) {
             throw Error(`Tipo de dados "${tipo}" não suportado para converter e salvar em um campo.`);
         }
+
+        this.#carregar = carregar ?? true;
+        this.#salvar = salvar ?? true;
+    }
+
+    get carregar() {
+        return this.#carregar;
+    }
+
+    get salvar() {
+        return this.#salvar;
     }
 
     get idCampo() {
