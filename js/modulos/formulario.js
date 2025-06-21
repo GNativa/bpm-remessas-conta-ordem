@@ -85,7 +85,7 @@ class Formulario {
     gerar() {
         const camposControle = [
             new CampoTexto("filiaisUsuario", "Abrangência de filiais do usuário (ERP, empresa 1)", 12, null, null,
-                null, null, null, 5),
+                null, null, null, null, 5),
         ];
         const camposRemessa = [
             new CampoFactory("selecionar", (id) => {
