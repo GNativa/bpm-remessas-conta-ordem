@@ -169,7 +169,7 @@ class Formulario {
 
         this.#secaoControle = new Secao("controle", "Controle", camposControle, this.#campos);
         this.#secaoRemessa = new ListaObjetos(
-            "remessa", "Remessas", this.#campos, camposRemessa, this.#validador, true, true
+            "remessa", "Remessas", this.#campos, camposRemessa, this.#validador, false, false
         );
 
         this.#secaoControle.gerar();
@@ -227,6 +227,14 @@ class Formulario {
                     );
                     return colecao;
                 }
+            ),
+            new Validacao(
+                (campo) => {
+                    return campo.valor() !== "" && !RegExp("^[1-9]([0-9]*)$").test(campo.valor());
+                },
+                "Insira um número válido.",
+                () => this.#campos.obter("numeroNotaRecebida"),
+                () => this.#campos.obter("numeroNotaRecebida"),
             ),
             /*
             new Validacao(
