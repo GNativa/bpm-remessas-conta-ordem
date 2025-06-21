@@ -3,7 +3,7 @@ class Conversor {
         new Map()
             .set("texto", (valor) => valor.toString())
             .set("decimal", (valor) => Number(valor))
-            .set("booleano", (valor) => valor === "on")
+            .set("booleano", (valor) => valor === true)
             .set("inteiro", (valor) => Number(valor).toFixed(0))
             .set("data", (valor) => valor.slice(0,10));
 

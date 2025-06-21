@@ -168,8 +168,9 @@ class Formulario {
         ];
 
         this.#secaoControle = new Secao("controle", "Controle", camposControle, this.#campos);
-        this.#secaoRemessa = new ListaObjetos("remessa", "Remessas", this.#campos, camposRemessa,
-            this.#validador, true, true);
+        this.#secaoRemessa = new ListaObjetos(
+            "remessa", "Remessas", this.#campos, camposRemessa, this.#validador, true, true
+        );
 
         this.#secaoControle.gerar();
         this.#secaoRemessa.gerar();
@@ -198,7 +199,7 @@ class Formulario {
                     const campos = this.#campos.obter("selecionar");
 
                     const selecionouAoMenosUm = campos.some((selecionado) => {
-                        return selecionado.campo.prop("checked") === true;
+                        return selecionado.val() === true;
                     });
 
                     return !selecionouAoMenosUm;

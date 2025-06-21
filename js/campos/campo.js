@@ -329,17 +329,21 @@ class Campo {
     }
 
     val(valor) {
-        if (valor === undefined) {
-            return this.campo.val();
+        if (typeof valor === "undefined") {
+            return this.campo.attr("type") === "checkbox" ? this.campo.prop("checked") : this.campo.val();
         }
 
-        return this.campo.val(valor).trigger("input").trigger("change");
+        return (this.campo.attr("type") === "checkbox" ? this.campo.prop("checked", valor) : this.campo.val(valor)).trigger("input").trigger("change");
+    }
+
+    prop(propriedade, valor) {
+        return this.campo.prop(propriedade, valor);
     }
 
     cleanVal() {
         const valorLimpo = this.campo.cleanVal();
 
-        if (valorLimpo === undefined) {
+        if (typeof valorLimpo === "undefined") {
             return this.campo.val();
         }
 
