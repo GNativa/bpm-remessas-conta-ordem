@@ -44,7 +44,7 @@ class Conversor {
     }
 
     obterValor(objeto) {
-        const converter = Conversor.#conversores.get(this.#idCampo);
+        const converter = Conversor.#conversores.get(this.#tipo);
         return converter(objeto[this.#propriedade]);
     }
 }
