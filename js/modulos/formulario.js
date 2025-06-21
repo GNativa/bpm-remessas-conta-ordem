@@ -264,6 +264,14 @@ class Formulario {
         const campoAbrangenciaFiliais = this.#campos.obterCampo("filiaisUsuario");
         campoAbrangenciaFiliais.valor(filiais);
 
+        const sucesso = mapa.get("sucesso");
+
+        if (sucesso === false) {
+            const mensagem = mapa.get("mensagem");
+            Mensagem.exibir("Erro ao carregar as remessas", `${mensagem}`, "erro");
+            return;
+        }
+
         const remessas = mapa.get("remessas");
         this.carregarListaDeObjetos(remessas, this.#secaoRemessa);
 
