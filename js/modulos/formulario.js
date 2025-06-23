@@ -63,7 +63,6 @@ class Formulario {
                 "texto"
             ),
             new Conversor("dataEmissaoNotaVenda","remessas_data_emissao_nota_venda", "data"),
-            /*
             new Conversor(
                 "observacao",
                 "remessas_observacao",
@@ -71,7 +70,6 @@ class Formulario {
                 true,
                 false
             ),
-             */
             new Conversor("safra","remessas_safra", "texto"),
             new Conversor("placa","remessas_placa", "texto"),
             new Conversor("motorista","remessas_motorista", "texto"),
@@ -102,7 +100,7 @@ class Formulario {
                 "observacaoGerada", "dataEmissao", "empresa", "filial", "serie", "contrato", "remessa", "situacao",
                 "situacaoDocEletronico", "cliente", "nomeCliente", "notaVenda", "serieLegalNotaVenda",
                 "clienteNotaVenda", "nomeClienteNotaVenda", "dataEmissaoNotaVenda", "safra", "placa", "motorista",
-                // "observacao"
+                "observacao"
             ],
         });
 
@@ -194,11 +192,9 @@ class Formulario {
             new CampoFactory("motorista", (id) => {
                 return new CampoTexto(id, "Motorista", 2);
             }),
-            /*
             new CampoFactory("observacao", (id) => {
                 return new CampoTexto(id, "Observação da remessa", 4, null, null, null, null, null, null, 5);
             }),
-             */
             new CampoFactory("numeroNotaRecebida", (id) => {
                 return new CampoTexto(id, "Nota recebida", 2);
             }),
