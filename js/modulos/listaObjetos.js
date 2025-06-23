@@ -28,7 +28,7 @@ class ListaObjetos extends Secao {
 
         const linhaItem = $(`
             <div ${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indice}"
-                 class="row g-3 pb-3 linha-lista">
+                 class="row g-3 pb-3 linha-secao">
             </div>`);
 
         const botaoRemover = $(`
@@ -45,10 +45,10 @@ class ListaObjetos extends Secao {
 
         if (indice === 0 || Utilitario.obterEtapa() === null) {
             botaoRemover.prop("disabled", true);
-            hr.addClass("border-2");
+            hr.addClass("border-0");
         }
         else {
-            hr.addClass("border-1");
+            hr.addClass("border-0");
             //linhaItem.addClass("mt-1");
         }
 
