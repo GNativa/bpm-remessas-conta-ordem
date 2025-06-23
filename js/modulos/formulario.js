@@ -56,7 +56,7 @@ class Formulario {
             new Conversor(
                 "emissaoNotaRecebida",
                 "remessas_data_emissao_nota_recebida",
-                "texto",
+                "data",
                 false
             ),
         ];
