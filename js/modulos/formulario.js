@@ -18,24 +18,38 @@ class Formulario {
 
         this.#conversores = [
             new Conversor("selecionar","remessas_selecionada", "booleano", false),
-            new Conversor("observacaoGerada","remessas_observacao_gerada", "booleano"),
+            new Conversor(
+                "observacaoGerada",
+                "remessas_observacao_gerada",
+                "booleano",
+                true,
+                false
+            ),
             new Conversor("dataEmissao","remessas_data_emissao", "data"),
             new Conversor("empresa","remessas_empresa", "inteiro"),
             new Conversor("filial","remessas_filial", "inteiro"),
             new Conversor("serie","remessas_serie", "texto"),
             new Conversor("contrato","remessas_contrato", "texto"),
-            new Conversor("situacao","remessas_situacao", "texto"),
+            new Conversor("situacao","remessas_situacao", "texto", true, false),
             new Conversor(
                 "situacaoDocEletronico",
                 "remessas_situacao_documento_eletronico",
-                "texto"
+                "texto",
+                true,
+                false
             ),
             new Conversor("remessa","remessas_numero", "inteiro"),
-            new Conversor("cliente","remessas_cliente", "inteiro"),
+            new Conversor("cliente","remessas_cliente", "inteiro", true, false),
             new Conversor("nomeCliente","remessas_nome_cliente", "texto"),
             new Conversor("notaVenda","remessas_nota_venda", "inteiro"),
             new Conversor("serieLegalNotaVenda","remessas_serie_legal_nota_venda", "texto"),
-            new Conversor("clienteNotaVenda","remessas_cliente_nota_venda", "inteiro"),
+            new Conversor(
+                "clienteNotaVenda",
+                "remessas_cliente_nota_venda",
+                "inteiro",
+                true,
+                false
+            ),
             new Conversor("nomeClienteNotaVenda","remessas_nome_cliente_nota_venda", "texto"),
             new Conversor("ieClienteNotaVenda","remessas_ie_cliente_nota_venda", "texto"),
             new Conversor(
@@ -49,7 +63,13 @@ class Formulario {
                 "texto"
             ),
             new Conversor("dataEmissaoNotaVenda","remessas_data_emissao_nota_venda", "data"),
-            new Conversor("observacao","remessas_observacao", "texto"),
+            new Conversor(
+                "observacao",
+                "remessas_observacao",
+                "texto",
+                true,
+                false
+            ),
             new Conversor("safra","remessas_safra", "texto"),
             new Conversor("placa","remessas_placa", "texto"),
             new Conversor("motorista","remessas_motorista", "texto"),
