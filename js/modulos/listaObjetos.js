@@ -27,7 +27,8 @@ class ListaObjetos extends Secao {
         const indice = this.obterIndiceUltimaLinha() + 1;
 
         const linhaItem = $(`<div ${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indice}" class="row g-3"></div>`);
-        const colunaBotaoRemover = $(`<div class="col-12 d-flex justify-content-end"></div>`);
+        const colunaSuperior = $(`<div class="col-6 d-flex justify-content-start align-items-center fw-bold">${indice + 1}</div>`);
+        const colunaBotaoRemover = $(`<div class="col-6 d-flex justify-content-end"></div>`);
         const botaoRemover = $(`
             <button type="button" title="Remover linha" id="removerLinhaSecao${this.id}${indice}" class="btn botao ms-3">
                 <i class="bi bi-x fs-5"></i>
@@ -42,18 +43,19 @@ class ListaObjetos extends Secao {
 
         if (indice === 0 || Utilitario.obterEtapa() === null) {
             botaoRemover.prop("disabled", true);
-            hr.addClass("border-3");
+            hr.addClass("border-2");
         }
         else {
-            hr.addClass("border-2");
+            hr.addClass("border-1");
             //linhaItem.addClass("mt-1");
         }
 
         if (this.#permiteRemoverLinhas) {
             colunaBotaoRemover.append(botaoRemover);
-            linhaItem.append(colunaBotaoRemover);
         }
 
+        linhaItem.append(colunaSuperior);
+        linhaItem.append(colunaBotaoRemover);
         this.divSecao.append(linhaItem);
 
         const camposDaLinha = [];
