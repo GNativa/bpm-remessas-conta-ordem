@@ -126,7 +126,8 @@ class Formulario {
                 + " a observação da remessa deverá ser alterada.");
             }),
             new CampoFactory("observacaoGerada", (id) => {
-                return new CampoCheckbox(id, "Observação já foi gerada?", 2);
+                return new CampoCheckbox(id, "Observação já foi gerada?", 2, "Indica se a observação"
+                + " da remessa já foi gerada através deste processo.");
             }),
             new CampoFactory("remessa", (id) => {
                 return new CampoTexto(id, "Remessa", 2);
