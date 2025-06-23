@@ -21,7 +21,7 @@ class Secao {
         const tituloSecao = $(`<div class="titulo-g"></div>`);
         tituloSecao.text(this.titulo);
 
-        const hr = $(`<hr class="hr-titulo border-3">`);
+        const hr = $(`<hr class="hr-titulo border-4">`);
         linhaTitulo.append(colunaTitulo);
         colunaTitulo.append(tituloSecao);
         elementoSecao.append(linhaTitulo);

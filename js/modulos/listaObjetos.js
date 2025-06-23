@@ -42,10 +42,10 @@ class ListaObjetos extends Secao {
 
         if (indice === 0 || Utilitario.obterEtapa() === null) {
             botaoRemover.prop("disabled", true);
-            hr.addClass("border-2");
+            hr.addClass("border-3");
         }
         else {
-            hr.addClass("border-1");
+            hr.addClass("border-2");
             //linhaItem.addClass("mt-1");
         }
 
