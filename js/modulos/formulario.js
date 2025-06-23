@@ -281,7 +281,7 @@ class Formulario {
 
         const remessas = mapa.get("remessas");
 
-        if (remessas === null) {
+        if (!remessas) {
             return;
         }
 
@@ -373,7 +373,7 @@ class Formulario {
     carregarDadosFormulario(mapa) {
         const remessas = mapa.get("remessas");
 
-        if (remessas === null) {
+        if (!remessas) {
             return;
         }
 
