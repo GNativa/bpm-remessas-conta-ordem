@@ -123,7 +123,7 @@ class Formulario {
         const camposRemessa = [
             new CampoFactory("selecionar", (id) => {
                 return new CampoCheckbox(id, "Selecionar", 2, "Marque aqui para indicar que"
-                + " a observação da remessa deverá ser alterada.");
+                + " a observação da remessa deverá ser gerada.");
             }),
             new CampoFactory("observacaoGerada", (id) => {
                 return new CampoCheckbox(id, "Observação já foi gerada?", 2, "Indica se a observação"
