@@ -106,7 +106,7 @@ class Formulario {
 
         this.#validador.definirCamposOcultos({
             "etapaUnica": [
-                "ieClienteNotaVenda", "enderecoClienteNotaVenda", "documentoClienteNotaVenda",
+                "filiaisUsuario", "ieClienteNotaVenda", "enderecoClienteNotaVenda", "documentoClienteNotaVenda",
             ],
         });
     }
