@@ -18,6 +18,7 @@ class Formulario {
 
         this.#conversores = [
             new Conversor("selecionar","remessas_selecionada", "booleano", false),
+            new Conversor("observacaoGerada","remessas_observacao_gerada", "booleano"),
             new Conversor("dataEmissao","remessas_data_emissao", "data"),
             new Conversor("empresa","remessas_empresa", "inteiro"),
             new Conversor("filial","remessas_filial", "inteiro"),
@@ -85,7 +86,7 @@ class Formulario {
 
         this.#validador.definirCamposOcultos({
             "etapaUnica": [
-                "filiaisUsuario", "ieClienteNotaVenda", "enderecoClienteNotaVenda", "documentoClienteNotaVenda",
+                "ieClienteNotaVenda", "enderecoClienteNotaVenda", "documentoClienteNotaVenda",
             ],
         });
     }
@@ -103,6 +104,10 @@ class Formulario {
             new CampoFactory("selecionar", (id) => {
                 return new CampoCheckbox(id, "Selecionar", 2, "Marque aqui para indicar que"
                 + " a observação da remessa deverá ser alterada.");
+            }),
+            new CampoFactory("observacaoGerada", (id) => {
+                return new CampoCheckbox(id, "Observação já gerada?", 2, "Indica se a observação da "
+                + " remessa já foi gerada ou não.");
             }),
             new CampoFactory("remessa", (id) => {
                 return new CampoTexto(id, "Remessa", 2);

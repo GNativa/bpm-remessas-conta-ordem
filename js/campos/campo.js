@@ -335,10 +335,10 @@ class Campo {
     // TODO: alterar nome do método para "valor" e remover o método acima
     val(valor) {
         if (typeof valor === "undefined") {
-            return this.campo.attr("type") === "checkbox" ? this.campo.prop("checked") : this.campo.val();
+            return this.campo.val();
         }
 
-        return (this.campo.attr("type") === "checkbox" ? this.campo.prop("checked", valor) : this.campo.val(valor)).trigger("input").trigger("change");
+        return this.campo.val(valor).trigger("input").trigger("change");
     }
 
     propriedade(propriedade, valor) {
