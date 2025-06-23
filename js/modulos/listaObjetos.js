@@ -26,8 +26,13 @@ class ListaObjetos extends Secao {
     criarLinha() {
         const indice = this.obterIndiceUltimaLinha() + 1;
 
-        const linhaItem = $(`<div ${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indice}" class="row g-3"></div>`);
-        const colunaSuperior = $(`<div class="col-6 d-flex justify-content-start align-items-center fw-bold">${indice + 1}</div>`);
+        const linhaItem = $(`
+            <div ${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indice}"
+                 class="row g-3 pb-3 linha-lista">
+            </div>`);
+        const colunaSuperior = $(`<div class="col-6 d-flex justify-content-start align-items-center fw-bold"></div>`);
+        //colunaSuperior.text((indice + 1));
+
         const colunaBotaoRemover = $(`<div class="col-6 d-flex justify-content-end"></div>`);
         const botaoRemover = $(`
             <button type="button" title="Remover linha" id="removerLinhaSecao${this.id}${indice}" class="btn botao ms-3">
