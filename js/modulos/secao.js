@@ -39,7 +39,7 @@ class Secao {
     }
 
     criarLinha() {
-        const linhaCampos = $(`<div class="row g-3 linha-secao"></div>`);
+        const linhaCampos = $(`<div class="row g-3 pb-3 linha-secao"></div>`);
 
         for (const campo of this.campos) {
             if (document.getElementById(campo.id) !== null) {
