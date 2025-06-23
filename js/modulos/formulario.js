@@ -259,7 +259,8 @@ class Formulario {
     async salvarDados() {
         let dados = {};
 
-        dados["remessas_json"] = JSON.stringify(this.carregarArrayPorLista(this.#secaoRemessa));
+        dados["remessas"] = this.carregarArrayPorLista(this.#secaoRemessa);
+        dados["remessas_json"] = JSON.stringify(dados["remessas"]);
 
         return dados;
     }
