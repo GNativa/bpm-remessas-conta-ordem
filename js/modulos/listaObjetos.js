@@ -30,10 +30,7 @@ class ListaObjetos extends Secao {
             <div ${Constantes.campos.atributos.linhaListaObjetos}${this.id}="${indice}"
                  class="row g-3 pb-3 linha-lista">
             </div>`);
-        const colunaSuperior = $(`<div class="col-6 d-flex justify-content-start align-items-center fw-bold"></div>`);
-        //colunaSuperior.text((indice + 1));
 
-        const colunaBotaoRemover = $(`<div class="col-6 d-flex justify-content-end"></div>`);
         const botaoRemover = $(`
             <button type="button" title="Remover linha" id="removerLinhaSecao${this.id}${indice}" class="btn botao ms-3">
                 <i class="bi bi-x fs-5"></i>
@@ -56,11 +53,11 @@ class ListaObjetos extends Secao {
         }
 
         if (this.#permiteRemoverLinhas) {
+            const colunaBotaoRemover = $(`<div class="col-12 d-flex justify-content-end"></div>`);
             colunaBotaoRemover.append(botaoRemover);
+            linhaItem.append(colunaBotaoRemover);
         }
 
-        linhaItem.append(colunaSuperior);
-        linhaItem.append(colunaBotaoRemover);
         this.divSecao.append(linhaItem);
 
         const camposDaLinha = [];
