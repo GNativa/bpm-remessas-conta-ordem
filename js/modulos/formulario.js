@@ -52,7 +52,7 @@ class Formulario {
             new Conversor("safra","remessas_safra", "texto"),
             new Conversor("placa","remessas_placa", "texto"),
             new Conversor("motorista","remessas_motorista", "texto"),
-            new Conversor("notaRecebida","remessas_nota_recebida", "inteiro", false),
+            new Conversor("numeroNotaRecebida","remessas_nota_recebida", "inteiro", false),
             new Conversor(
                 "emissaoNotaRecebida",
                 "remessas_data_emissao_nota_recebida",
