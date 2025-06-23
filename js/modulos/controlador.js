@@ -5,32 +5,31 @@
 
 class Controlador {
     #validador;
-    #etapa;
+    #etapa = null;
     #colecao;
     formulario;
-    #inicializado;
-    accessToken;
+    #inicializado = false; // Indica se o formulário foi inicializado
+    #accessToken = null; // Access token da plataforma
     workflowCockpit;
 
     constructor(validador, colecao, formulario) {
         // Variáveis para uso na geração e validação do formulário.
         this.#validador = validador;
         this.#colecao = colecao;
-        this.#etapa = null;
         this.formulario = formulario;
-        this.#inicializado = false; // Indica se o formulário foi inicializado
-        this.accessToken = null;   // Access token da plataforma
 
         // Interface da API do workflow (BPM) que lida com a inicialização, salvamento de dados e erros do formulário.
         // Função "_rollback" não implementada até o momento
         this.workflowCockpit = workflowCockpit({
             init: (data, info) => {
-                this._init(data, info, this);
+                this._init(data, info);
             },
             onSubmit: async (data, info) => {
-                await this._saveData(data, info, this);
+                return await this._saveData(data, info);
             },
-            onError: this._rollback,
+            onError: () => {
+                this._rollback();
+            },
         });
     }
 
@@ -40,8 +39,8 @@ class Controlador {
         Também será responsável por carregar as fontes de dados
         com o uso do token do usuário.
      */
-     _init(data, info, controlador) {
-        controlador.inicializar();
+     _init(data, info) {
+        this.inicializar();
         const { initialVariables } = data["loadContext"];
         console.log(initialVariables);
         const mapa = new Map();
@@ -51,7 +50,7 @@ class Controlador {
         }
 
         console.log("Carregando dados do fluxo: ", mapa);
-        controlador.formulario.carregarDadosFluxo(mapa);
+        this.formulario.carregarDadosFluxo(mapa);
 
         info["getUserData"]()
             .then(function (user) {
@@ -73,7 +72,7 @@ class Controlador {
                 return info["getPlatformData"]();
             })
             .then((dados) => {
-                controlador.accessToken = dados["token"]["access_token"];
+                this.#accessToken = dados["token"]["access_token"];
                 return info["getInfoFromProcessVariables"]();
                 //return carregarFontes(dados);
             })
@@ -93,10 +92,10 @@ class Controlador {
                     }
 
                     console.log("Carregando dados do formulário: ", mapa);
-                    controlador.formulario.carregarDadosFormulario(mapa);
+                    this.formulario.carregarDadosFormulario(mapa);
 
                     // Disparar eventos dos campos para ativar validações
-                    controlador.notificarCampos();
+                    this.#notificarCampos();
                 }
             })
             .catch(function (error) {
@@ -113,10 +112,10 @@ class Controlador {
     /*
         Valida o formulário e salva os dados na API do Workflow.
      */
-    async _saveData(data, info, controlador) {
-        controlador.validarFormulario();
+    async _saveData(data, info) {
+        this.#validarFormulario();
 
-        let dados = await controlador.formulario.salvarDados();
+        let dados = await this.formulario.salvarDados();
         console.log(dados);
 
         return {
@@ -151,7 +150,7 @@ class Controlador {
         this.#inicializado = true;
     }
 
-    notificarCampos() {
+    #notificarCampos() {
         // Disparar eventos dos campos para ativar validações
         for (const campo of this.#colecao.obterTodosCampos()) {
             campo.notificar();
@@ -238,13 +237,13 @@ class Controlador {
          */
     }
 
-    // validarFormulario(): void
+    // #validarFormulario(): void
     /*
         Valida o formulário e exibe uma mensagem conforme o resultado da validação.
         Caso o formulário seja inválido, um erro é lançado para impedir que a plataforma prossiga
         com o envio dos dados.
      */
-    validarFormulario() {
+    #validarFormulario() {
         this.#validador.validarCampos();
 
         const titulo = "Validação";
@@ -281,7 +280,7 @@ class Controlador {
 
         $("#tituloFormulario").text(personalizacao.titulo);
         $("#botaoEnviar").on("click", () => {
-            this.validarFormulario();
+            this.#validarFormulario();
         });
 
         // Configurar esquema de cores com base nas preferências do usuário
