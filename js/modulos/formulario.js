@@ -377,7 +377,7 @@ class Formulario {
             return;
         }
 
-        this.carregarListaDeObjetos(remessas, this.#secaoRemessa);
+        this.carregarListaDeObjetos(JSON.parse(remessas), this.#secaoRemessa);
     }
 
     // definirEstadoInicial(): void
