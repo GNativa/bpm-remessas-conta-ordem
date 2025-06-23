@@ -280,6 +280,11 @@ class Formulario {
         }
 
         const remessas = mapa.get("remessas");
+
+        if (remessas === null) {
+            return;
+        }
+
         this.carregarListaDeObjetos(remessas, this.#secaoRemessa);
 
         /*
@@ -366,8 +371,13 @@ class Formulario {
         repassando-os para os campos e variáveis necessárias.
      */
     carregarDadosFormulario(mapa) {
+        const remessas = mapa.get("remessas");
 
-        // campos["x"].valor(mapa.get("x") || "");
+        if (remessas === null) {
+            return;
+        }
+
+        this.carregarListaDeObjetos(remessas, this.#secaoRemessa);
     }
 
     // definirEstadoInicial(): void
