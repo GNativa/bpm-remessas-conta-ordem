@@ -77,7 +77,7 @@ class Formulario {
 
         this.#validador.definirCamposBloqueados({
             "etapaUnica": [
-                "dataEmissao", "empresa", "filial", "serie", "contrato", "remessa", "situacao",
+                "observacaoGerada", "dataEmissao", "empresa", "filial", "serie", "contrato", "remessa", "situacao",
                 "situacaoDocEletronico", "cliente", "nomeCliente", "notaVenda", "serieLegalNotaVenda",
                 "clienteNotaVenda", "nomeClienteNotaVenda", "dataEmissaoNotaVenda", "safra", "placa", "motorista",
                 "observacao",
@@ -106,8 +106,7 @@ class Formulario {
                 + " a observação da remessa deverá ser alterada.");
             }),
             new CampoFactory("observacaoGerada", (id) => {
-                return new CampoCheckbox(id, "Observação já gerada?", 2, "Indica se a observação da "
-                + " remessa já foi gerada ou não.");
+                return new CampoCheckbox(id, "Observação já foi gerada?", 2);
             }),
             new CampoFactory("remessa", (id) => {
                 return new CampoTexto(id, "Remessa", 2);
