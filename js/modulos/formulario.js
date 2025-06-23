@@ -272,6 +272,18 @@ class Formulario {
                 () => this.#campos.obter("numeroNotaRecebida"),
                 () => this.#campos.obter("numeroNotaRecebida"),
             ),
+            new Validacao(
+                (campo) => {
+                    const linha = campo.linhaLista;
+                    const selecionar = this.#campos.obterPorLinha("selecionar", linha);
+                    const observacaoJaGerada = this.#campos.obterPorLinha("observacaoGerada", linha);
+
+                    return selecionar.valor() === true && observacaoJaGerada.valor() === true;
+                },
+                "A observação desta remessa já foi gerada.",
+                () => this.#campos.obterVarios(["selecionar", "observacaoGerada"]),
+                () => this.#campos.obter("observacaoGerada"),
+            )
             /*
             new Validacao(
                 (campo) => {
