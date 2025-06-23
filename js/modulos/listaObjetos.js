@@ -38,10 +38,6 @@ class ListaObjetos extends Secao {
             this.removerLinha(indice);
         });
 
-        if (!this.#permiteRemoverLinhas) {
-            botaoRemover.prop("disabled", true);
-        }
-
         const hr = $("<hr>");
 
         if (indice === 0 || Utilitario.obterEtapa() === null) {
@@ -53,8 +49,11 @@ class ListaObjetos extends Secao {
             //linhaItem.addClass("mt-1");
         }
 
-        colunaBotaoRemover.append(botaoRemover);
-        linhaItem.append(colunaBotaoRemover);
+        if (this.#permiteRemoverLinhas) {
+            colunaBotaoRemover.append(botaoRemover);
+            linhaItem.append(colunaBotaoRemover);
+        }
+
         this.divSecao.append(linhaItem);
 
         const camposDaLinha = [];
