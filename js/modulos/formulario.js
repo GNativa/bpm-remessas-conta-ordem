@@ -252,16 +252,14 @@ class Formulario {
         ];
     }
 
-    // #salvarDados(): Promise<{}>
+    // salvarDados(): Promise<{}>
     /*
         Guarda os dados de todos os campos em um objeto para uso na função _saveData da API do workflow.
      */
     async salvarDados() {
         let dados = {};
 
-        dados.remessas = this.carregarArrayPorLista(this.#secaoRemessa);
-
-        // dados.x = campos["x"].valor();
+        dados["remessas_json"] = JSON.stringify(this.carregarArrayPorLista(this.#secaoRemessa));
 
         return dados;
     }
