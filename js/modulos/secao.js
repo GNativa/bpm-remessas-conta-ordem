@@ -67,7 +67,7 @@ class Secao {
         const possuiTitulo = this.possuiTitulo;
 
         secao.attr("id", id);
-        secao.addClass("mb-4");
+        secao.addClass("secao mb-4");
 
         if (possuiTitulo) {
             this.configurarTitulo(secao);
