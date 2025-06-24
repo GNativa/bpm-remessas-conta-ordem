@@ -273,6 +273,7 @@ class Formulario {
                 () => this.#campos.obter("numeroNotaRecebida"),
                 () => this.#campos.obter("numeroNotaRecebida"),
             ),
+            /*
             new Validacao(
                 (campo) => {
                     const linha = campo.linhaLista;
@@ -285,18 +286,6 @@ class Formulario {
                 () => this.#campos.obterVarios(["selecionar", "observacaoGerada"]),
                 () => this.#campos.obter("observacaoGerada"),
             )
-            /*
-            new Validacao(
-                (campo) => {
-                    const campoSelecionar = this.#campos.obterPorLinha("selecionar", campo.linhaLista);
-                    const campoObservacao = this.#campos.obterPorLinha("observacao", campo.linhaLista);
-
-                    return campoObservacao.valor() !== "" && campoSelecionar.campo.prop("checked");
-                },
-                "A observação desta nota já foi preenchida.",
-                () => this.#campos.obterVarios(["observacao", "selecionar"]),
-                () => this.#campos.obter("observacao"),
-            ),
              */
         ];
     }
