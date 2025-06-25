@@ -1,0 +1,10 @@
+:root, [data-bs-theme=light] {
+    //--cor-base: var(--cor-base-dev);
+    --cor-base: #ff8800;
+}
+
+:root, [data-bs-theme=dark] {
+    //--cor-base: var(--cor-base-dev);
+    //--cor-base: #ffa200;
+    --cor-base: #ff8800;
+}
