@@ -208,7 +208,7 @@ class Formulario {
         this.#secaoRemessa = new ListaObjetos(
             "remessa", "Remessas", this.#campos, this.#validador,
             camposRemessa,["filial", "remessa"],
-            true,false
+            false, false
         );
 
         this.#secaoControle.gerar();
