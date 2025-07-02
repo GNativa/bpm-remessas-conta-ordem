@@ -5,6 +5,7 @@
 
 class Formulario {
     #fontes = {};
+    #secoes = new Map();
     #campos;
     #conversores = [];
     #validador;
@@ -213,6 +214,18 @@ class Formulario {
 
         this.#secaoControle.gerar();
         this.#secaoRemessa.gerar();
+    }
+
+    #salvarSecao(secao) {
+        this.#secoes.set(secao.id, secao);
+    }
+
+    finalizar() {
+        for (const secao of this.#secoes.values()) {
+            if (!(secao instanceof ListaObjetos)) continue;
+
+            secao.exibirLinhas();
+        }
     }
 
     obterValidacoes() {
