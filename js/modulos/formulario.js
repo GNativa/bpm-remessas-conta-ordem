@@ -97,15 +97,12 @@ class Formulario {
         });
 
         this.#validador.definirCamposBloqueados({
-            /*
             "etapaUnica": [
                 "observacaoGerada", "dataEmissao", "empresa", "filial", "serie", "contrato", "remessa", "situacao",
                 "situacaoDocEletronico", "cliente", "nomeCliente", "notaVenda", "serieLegalNotaVenda",
                 "clienteNotaVenda", "nomeClienteNotaVenda", "dataEmissaoNotaVenda", "safra", "placa", "motorista",
                 "observacao"
             ],
-
-             */
         });
 
         this.#validador.definirCamposOcultos({
