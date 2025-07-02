@@ -97,17 +97,21 @@ class Formulario {
         });
 
         this.#validador.definirCamposBloqueados({
+            /*
             "etapaUnica": [
                 "observacaoGerada", "dataEmissao", "empresa", "filial", "serie", "contrato", "remessa", "situacao",
                 "situacaoDocEletronico", "cliente", "nomeCliente", "notaVenda", "serieLegalNotaVenda",
                 "clienteNotaVenda", "nomeClienteNotaVenda", "dataEmissaoNotaVenda", "safra", "placa", "motorista",
                 "observacao"
             ],
+
+             */
         });
 
         this.#validador.definirCamposOcultos({
             "etapaUnica": [
                 "filiaisUsuario", "ieClienteNotaVenda", "enderecoClienteNotaVenda", "documentoClienteNotaVenda",
+                "cliente", "clienteNotaVenda",
             ],
         });
     }
@@ -128,19 +132,19 @@ class Formulario {
             }),
             new CampoFactory("observacaoGerada", (id) => {
                 return new CampoCheckbox(id, "Observação já foi gerada?", 2, "Indica se a observação"
-                + " da remessa já foi gerada através deste processo.");
-            }),
-            new CampoFactory("remessa", (id) => {
-                return new CampoTexto(id, "Remessa", 2);
-            }),
-            new CampoFactory("dataEmissao", (id) => {
-                return new CampoData(id, "Data de emissão", 2);
+                + " da remessa já foi gerada/preenchida.");
             }),
             new CampoFactory("empresa", (id) => {
                 return new CampoTexto(id, "Empresa", 2);
             }),
             new CampoFactory("filial", (id) => {
                 return new CampoTexto(id, "Filial", 2);
+            }),
+            new CampoFactory("remessa", (id) => {
+                return new CampoTexto(id, "Remessa", 2);
+            }),
+            new CampoFactory("dataEmissao", (id) => {
+                return new CampoData(id, "Data de emissão", 2);
             }),
             new CampoFactory("serie", (id) => {
                 return new CampoTexto(id, "Série", 2);
@@ -194,7 +198,7 @@ class Formulario {
                 return new CampoTexto(id, "Motorista", 2);
             }),
             new CampoFactory("observacao", (id) => {
-                return new CampoTexto(id, "Observação da remessa", 4, null, null, null, null, null, null, 5);
+                return new CampoTexto(id, "Observação atual da remessa", 4, null, null, null, null, null, null, 5);
             }),
             new CampoFactory("numeroNotaRecebida", (id) => {
                 return new CampoTexto(id, "Nota recebida", 2);
@@ -208,9 +212,12 @@ class Formulario {
         this.#secaoControle = new Secao("controle", "Controle", camposControle, this.#campos);
         this.#secaoRemessa = new ListaObjetos(
             "remessa", "Remessas", this.#campos, this.#validador,
-            camposRemessa,["filial", "remessa"],
+            camposRemessa,["empresa", "filial", "contrato", "remessa"],
             false, false
         );
+
+        this.#salvarSecao(this.#secaoControle);
+        this.#salvarSecao(this.#secaoRemessa);
 
         this.#secaoControle.gerar();
         this.#secaoRemessa.gerar();
