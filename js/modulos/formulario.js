@@ -40,7 +40,7 @@ class Formulario {
                 false
             ),
             new Conversor("remessa","remessas_numero", "inteiro"),
-            new Conversor("cliente","remessas_cliente", "inteiro", true, false),
+            new Conversor("cliente","remessas_cliente", "inteiro", true, true),
             new Conversor("nomeCliente","remessas_nome_cliente", "texto"),
             new Conversor("notaVenda","remessas_nota_venda", "inteiro"),
             new Conversor("serieLegalNotaVenda","remessas_serie_legal_nota_venda", "texto"),
@@ -124,12 +124,12 @@ class Formulario {
         ];
         const camposRemessa = [
             new CampoFactory("selecionar", (id) => {
-                return new CampoCheckbox(id, "Selecionar", 2, "Marque aqui para indicar que"
-                + " a observação da remessa deverá ser gerada.");
+                return new CampoCheckbox(id, "Selecionar", 2, "Marque aqui para indicar que "
+                    + "deseja gerar a observação da remessa, fechá-la e gerar seu XML.");
             }),
             new CampoFactory("observacaoGerada", (id) => {
-                return new CampoCheckbox(id, "Observação já foi gerada?", 2, "Indica se a observação"
-                + " da remessa já foi gerada/preenchida.");
+                return new CampoCheckbox(id, "Observação já foi gerada?", 2, "Indica se a observação "
+                    + "da remessa já foi gerada/preenchida.");
             }),
             new CampoFactory("empresa", (id) => {
                 return new CampoTexto(id, "Empresa", 2);
